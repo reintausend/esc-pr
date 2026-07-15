@@ -1,0 +1,23 @@
+/*
+  Real font files live in assets/fonts/. Only the weight actually used
+  by the current design (500) is declared here — the folders contain
+  more weights/styles (Light/Regular/SemiBold/Bold/Heavy, italics,
+  Typestar OCR/Black variants) available for later if the merged
+  project needs them; add more @font-face blocks the same way.
+*/
+
+@font-face {
+  font-family: "Roobert";
+  src: url("../assets/fonts/roobert/Roobert-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Typestar Normal";
+  src: url("../assets/fonts/typestar/Typestar-Normal.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}

@@ -1,0 +1,35 @@
+<!--
+  Zweck dieser Datei:
+  Startseite des Glyphs Project mit Eingabedialog und "Create"-Button.
+  Beim Absenden wird zur Preview-Seite weitergeleitet.
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glyphs Project</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <main class="start-screen">
+    <form class="create-form" id="create-form">
+      <label class="input-wrapper" for="message-input">
+        <span class="sr-only">Nachricht eingeben</span>
+        <input
+          id="message-input"
+          name="message"
+          type="text"
+          placeholder="ENTER MESSAGE"
+          autocomplete="off"
+          required
+        >
+      </label>
+
+      <button type="submit" class="create-button">Create</button>
+    </form>
+  </main>
+
+  <script type="module" src="index.js"></script>
+</body>
+</html>

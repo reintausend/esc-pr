@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Secret Receipts</title>
+
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/grid.css" />
+  <link rel="stylesheet" href="css/pages.css" />
+  <link rel="stylesheet" href="css/components/button.css" />
+  <link rel="stylesheet" href="css/components/ticker.css" />
+</head>
+<body>
+  <main class="stage">
+    <div class="region-ticker">
+      <div class="ticker" data-component="ticker" data-speed="120">
+        <div class="ticker__track">
+          <span class="ticker__source">Secret Receipts. Deine Nachricht wird zum Bild.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="region-start-title">
+      <h1 class="start-title">Secret<br />Receipts</h1>
+    </div>
+
+    <div class="region-start-subtitle">
+      <p class="start-subtitle">Schreibe eine geheime Nachricht.<br />Sie wird als unlesbares Bild gedruckt.</p>
+    </div>
+
+    <div class="region-start-action">
+      <button class="btn btn--filled" type="button" data-component="button" data-action="start">
+        Start
+      </button>
+    </div>
+  </main>
+
+  <script type="module" src="js/main.js"></script>
+  <script type="module">
+    document.addEventListener("fr:action", (event) => {
+      if (event.detail.action === "start") {
+        window.location.href = "entry.html";
+      }
+    });
+  </script>
+</body>
+</html>

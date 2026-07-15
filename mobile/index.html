@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>ESC-PR Vector Decryption Client</title>
+
+  <link rel="stylesheet" href="../gui/css/reset.css" />
+  <link rel="stylesheet" href="../gui/css/variables.css" />
+  <link rel="stylesheet" href="../gui/css/fonts.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1 class="topbar__title">ESC-PR<br />Vector Decryption Client</h1>
+    <span class="topbar__mode" id="storeMode">…</span>
+  </header>
+
+  <!-- ============ Scan view ============ -->
+  <main class="view is-active" id="view-scan">
+    <p class="hint" id="hint">
+      Point the camera at the info receipt so its barcode strip is clearly
+      visible. Hold it flat and roughly level, avoid glare.
+      <small>Open this page directly in Safari or Chrome — the camera does
+      not start inside in-app browsers (Instagram etc.).</small>
+    </p>
+
+    <div class="actions" id="scanActions">
+      <button class="btn btn--filled" id="startBtn" disabled>Start camera</button>
+      <button class="btn hidden" id="fileBtn" type="button">Take a photo instead</button>
+      <input type="file" id="fileInput" accept="image/*" capture="environment" class="hidden" />
+    </div>
+
+    <div class="scanner hidden" id="scanner">
+      <video id="video" autoplay muted playsinline></video>
+      <div class="scanner__status" id="status">starting…</div>
+    </div>
+
+    <section class="result hidden" id="result">
+      <h2 class="section-title">Decoded message</h2>
+      <div class="result__text" id="decodedText"></div>
+      <img class="result__image" id="decodedImage" alt="original print" />
+      <div class="actions">
+        <button class="btn btn--filled" id="againBtn">Scan another</button>
+      </div>
+    </section>
+
+    <section class="log-section">
+      <h2 class="section-title">Status</h2>
+      <div class="log" id="log">ready</div>
+    </section>
+  </main>
+
+  <!-- ============ Feed view ============ -->
+  <main class="view" id="view-feed">
+    <p class="hint">
+      Every message ever created — as pure vector graphics. The content
+      stays encrypted; only a matching receipt reveals it.
+    </p>
+    <div class="feed" id="feed"></div>
+    <p class="feed__empty hidden" id="feedEmpty">No graphics yet.</p>
+  </main>
+
+  <!-- ============ Bottom tab navigation ============ -->
+  <nav class="tabbar">
+    <button class="tabbar__tab is-active" data-view="scan" type="button">Scan</button>
+    <button class="tabbar__tab" data-view="feed" type="button">Feed</button>
+  </nav>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>

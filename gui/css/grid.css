@@ -1,0 +1,23 @@
+/*
+  .stage locks the interface to a 16:9 aspect ratio and scales it to
+  fit any viewport (letterboxing top/bottom or left/right as needed),
+  which matches the target 16:9 display. container-type: inline-size
+  turns "cqw" into "1% of the stage's own width" everywhere inside it,
+  so every component scales together regardless of viewport size.
+*/
+
+.stage {
+  position: relative;
+  width: 100vw;
+  height: calc(100vw * 9 / 16);
+  max-height: 100vh;
+  max-width: calc(100vh * 16 / 9);
+  margin: auto;
+  background: var(--color-bg);
+  overflow: hidden;
+  container-type: inline-size;
+
+  display: grid;
+  grid-template-columns: repeat(16, 1fr);
+  grid-template-rows: repeat(24, 1fr);
+}

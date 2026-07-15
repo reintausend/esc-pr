@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Decode - Secret Receipts</title>
+  <link rel="stylesheet" href="../shared/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="site">
+      <h1>Decode</h1>
+      <span class="mode" id="storeMode">...</span>
+    </header>
+
+    <div class="notice" id="hint">
+      Point the camera at the info receipt so its barcode strip is clearly
+      visible. Hold it flat and roughly level, avoid glare.
+      <br /><small>Open this page in Safari (not inside another app) - the
+      camera only works there.</small>
+    </div>
+
+    <div class="actions">
+      <button id="startBtn" disabled>Start camera</button>
+      <label for="fileInput" class="hidden" id="fileLabel">
+        <button class="secondary" type="button"
+                onclick="document.getElementById('fileInput').click()">
+          Take a photo instead
+        </button>
+      </label>
+      <input type="file" id="fileInput" accept="image/*" capture="environment"
+             class="hidden" />
+    </div>
+
+    <div class="scanner hidden" id="scanner">
+      <video id="video" autoplay muted playsinline></video>
+      <div class="status" id="status">starting...</div>
+    </div>
+
+    <div class="result hidden" id="result">
+      <h2>Decoded message</h2>
+      <div class="decoded" id="decodedText"></div>
+      <img id="decodedImage" alt="original print" />
+      <div class="actions" style="justify-content: center">
+        <button id="againBtn" class="secondary">Scan another</button>
+      </div>
+    </div>
+
+    <h2>Status</h2>
+    <div class="log" id="log">ready</div>
+  </div>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+/*
+  Grid placement for every region of the interface, derived directly
+  from the Figma pixel coordinates (see PLAN.md "Grid mapping" table
+  for the full derivation, including the two rotated elements).
+  Grid lines are 1-indexed; the stage is 16 columns x 24 rows.
+
+  Rounded Edges / Stroke / Tweak Horizontal / Tweak Vertical / Size each
+  got a slider added to their right (`*-slider` regions, cols 3/5), so
+  those five rows now occupy the full 4-column sidebar width (cols 1/5) —
+  same width as the Fill-In/Outline switch row above them. Back and
+  Randomize stay single 2-col buttons (cols 1/3), no slider. This doesn't
+  affect anything else: the sidebar's width already maxed out at 4 columns
+  via the switch row, and the canvas panel starts at column 7, well clear
+  of the 4-column sidebar in every row.
+*/
+
+.region-ticker {
+  grid-column: 1 / 17;
+  grid-row: 1 / 3;
+}
+
+.region-back {
+  grid-column: 1 / 2;
+  grid-row: 4 / 5;
+}
+
+.region-fill-outline {
+  grid-column: 1 / 5;
+  grid-row: 6 / 7;
+}
+
+.region-rounded-edges {
+  grid-column: 1 / 3;
+  grid-row: 8 / 9;
+}
+
+.region-rounded-edges-slider {
+  grid-column: 3 / 5;
+  grid-row: 8 / 9;
+}
+
+.region-stroke {
+  grid-column: 1 / 3;
+  grid-row: 10 / 11;
+}
+
+.region-stroke-slider {
+  grid-column: 3 / 5;
+  grid-row: 10 / 11;
+}
+
+.region-tweak-horizontal {
+  grid-column: 1 / 3;
+  grid-row: 12 / 13;
+}
+
+.region-tweak-horizontal-slider {
+  grid-column: 3 / 5;
+  grid-row: 12 / 13;
+}
+
+.region-tweak-vertical {
+  grid-column: 1 / 3;
+  grid-row: 14 / 15;
+}
+
+.region-tweak-vertical-slider {
+  grid-column: 3 / 5;
+  grid-row: 14 / 15;
+}
+
+.region-size {
+  grid-column: 1 / 3;
+  grid-row: 16 / 17;
+}
+
+.region-size-slider {
+  grid-column: 3 / 5;
+  grid-row: 16 / 17;
+}
+
+.region-randomize {
+  grid-column: 1 / 3;
+  grid-row: 18 / 19;
+}
+
+.region-canvas {
+  grid-column: 7 / 11;
+  grid-row: 4 / 24;
+}
+
+.region-stats {
+  grid-column: 13 / 17;
+  grid-row: 4 / 7;
+}
+
+.region-print {
+  grid-column: 15 / 17;
+  grid-row: 23 / 24;
+}
+
+/* Left-edge controls sit flush to the stage — no left border stroke,
+   so there is no thin vertical line along the left side of the screen. */
+.region-back .btn,
+.region-randomize .btn {
+  border-left: none;
+}

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Station - Secret Receipts</title>
+  <link rel="stylesheet" href="../shared/style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="site">
+      <h1>Encode</h1>
+      <span class="mode" id="storeMode">...</span>
+    </header>
+
+    <div class="notice hidden" id="offlineNotice">
+      Offline mode: no Supabase configured in <code>shared/config.js</code>.
+      Entries are stored in this browser only.
+    </div>
+
+    <label for="messageInput">Secret message</label>
+    <input type="text" id="messageInput" autocomplete="off"
+           placeholder="type a few words..." />
+
+    <h2>Transformation (placeholder)</h2>
+    <div class="sliders">
+      <div>
+        <label for="density">Density</label>
+        <input type="range" id="density" min="0" max="100" value="50" />
+      </div>
+      <div>
+        <label for="chaos">Chaos</label>
+        <input type="range" id="chaos" min="0" max="100" value="50" />
+      </div>
+      <div>
+        <label for="weight">Weight</label>
+        <input type="range" id="weight" min="0" max="100" value="50" />
+      </div>
+    </div>
+
+    <h2>Preview (as printed, 512 dots wide)</h2>
+    <div class="preview"><canvas id="previewCanvas"></canvas></div>
+
+    <div class="actions">
+      <button id="printBtn" disabled>Print &amp; store</button>
+      <button id="shuffleBtn" class="secondary">Shuffle</button>
+      <button id="downloadBtn" class="secondary">Download PNG</button>
+    </div>
+
+    <h2>Status</h2>
+    <div class="log" id="log">loading...</div>
+  </div>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+# Epson TM-T88IV — edit these values for your setup.
+# This file travels with the printer_setup folder when you copy it into other projects.
+
+paper:
+  width_mm: 80            # physical paper width (TM-T88IV = 80mm)
+  printable_width_mm: 72.2  # standard TM-T88IV printable area (512 dots @ 180 dpi)
+  dpi: 180                # standard TM-T88IV resolution (not ReStick/203 dpi)
+
+canvas:
+  # Print width in dots. 512 = max raster width for standard TM-T88IV (python-escpos profile).
+  width_dots: 512
+  # Height in dots for fixed-size layouts (labels, tickets). null = continuous receipt mode.
+  height_dots: null
+  # Background for create_canvas(): "white" or "black"
+  background: white
+
+print:
+  # Whether to cut paper automatically when a print job finishes.
+  cut: true
+  # Cut type: PART (partial, leaves a tab) or FULL (full cut).
+  cut_mode: PART
+  # Blank lines fed before cutting.
+  feed_lines: 3
+
+image:
+  # Auto-resize images before printing.
+  resize: true
+  # Keep original proportions when resizing.
+  keep_aspect_ratio: true
+  # How to fit: width | height | contain | cover | none
+  #   width   — scale to canvas width (default)
+  #   height  — scale to max_height_dots (requires max_height_dots)
+  #   contain — fit inside width×height box, no cropping
+  #   cover   — fill width×height box, crop overflow
+  #   none    — print at original size (same as resize: false)
+  fit: width
+  # Max width in dots. null = use canvas.width_dots (512).
+  max_width_dots: null
+  # Max height in dots. null = no limit (required for fit: height/contain/cover).
+  max_height_dots: null
+  # Convert color images to grayscale before printing (recommended for thermal).
+  grayscale: true
+
+usb:
+  vendor_id: 0x04b8
+  product_id: 0x0202
+  in_ep: 0x82
+  out_ep: 0x01
+  profile: TM-T88IV

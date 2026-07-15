@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FR Interface</title>
+
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/grid.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components/button.css" />
+  <link rel="stylesheet" href="css/components/label.css" />
+  <link rel="stylesheet" href="css/components/switch.css" />
+  <link rel="stylesheet" href="css/components/slider.css" />
+  <link rel="stylesheet" href="css/components/ticker.css" />
+  <link rel="stylesheet" href="css/components/panel.css" />
+  <link rel="stylesheet" href="css/editor.css" />
+</head>
+<body>
+  <main class="stage">
+    <div class="region-ticker">
+      <div class="ticker" data-component="ticker" data-speed="120">
+        <div class="ticker__track">
+          <span class="ticker__source">Mission erfolgreich. Wir treffen uns um Mitternacht.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="region-back">
+      <button class="btn btn--filled" type="button" data-component="button" data-action="back">
+        Back
+      </button>
+    </div>
+
+    <div class="region-fill-outline">
+      <div class="switch" id="fill-outline-switch" data-component="switch">
+        <button class="switch__option is-active" type="button" data-value="fill">Fill-In</button>
+        <button class="switch__option" type="button" data-value="outline">Outline</button>
+      </div>
+    </div>
+
+    <div class="region-rounded-edges">
+      <div class="label" data-component="label" data-for="rounded-edges">Rounded Edges</div>
+    </div>
+    <div class="region-rounded-edges-slider">
+      <div class="slider" data-component="slider" data-id="rounded-edges" data-min="0" data-max="100" data-value="0"></div>
+    </div>
+
+    <div class="region-stroke">
+      <div class="label" data-component="label" data-for="stroke">Stroke</div>
+    </div>
+    <div class="region-stroke-slider">
+      <div class="slider" data-component="slider" data-id="stroke" data-min="0" data-max="100" data-value="0"></div>
+    </div>
+
+    <div class="region-tweak-horizontal">
+      <div class="label" data-component="label" data-for="tweak-horizontal">Tweak Horizontal</div>
+    </div>
+    <div class="region-tweak-horizontal-slider">
+      <div class="slider" data-component="slider" data-id="tweak-horizontal" data-min="0" data-max="100" data-value="0"></div>
+    </div>
+
+    <div class="region-tweak-vertical">
+      <div class="label" data-component="label" data-for="tweak-vertical">Tweak Vertical</div>
+    </div>
+    <div class="region-tweak-vertical-slider">
+      <div class="slider" data-component="slider" data-id="tweak-vertical" data-min="0" data-max="100" data-value="0"></div>
+    </div>
+
+    <div class="region-size">
+      <div class="label" data-component="label" data-for="size">Size</div>
+    </div>
+    <div class="region-size-slider">
+      <div class="slider" data-component="slider" data-id="size" data-min="0" data-max="100" data-value="35"></div>
+    </div>
+
+    <div class="region-randomize">
+      <button class="btn btn--filled" type="button" data-component="button" data-action="randomize">
+        Randomize
+      </button>
+    </div>
+
+    <div class="region-canvas">
+      <div class="panel panel--canvas" id="canvas-panel" data-component="canvas">
+        <div class="glyph-grid" id="glyph-grid">
+          <div class="grid-content" id="grid-content"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="region-stats">
+      <div class="panel panel--stats">
+        <p class="stats">Wörter: <span id="word-count">0</span><br />Zeichen: <span id="char-count">0</span><br /><span id="status-line">Bereit</span></p>
+      </div>
+    </div>
+
+    <div class="region-print">
+      <button class="btn btn--filled" type="button" data-component="button" data-action="print">
+        Print
+      </button>
+    </div>
+  </main>
+
+  <script src="../generator/Editor/tools/paperjs-v0/dist/paper-core.min.js"></script>
+  <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

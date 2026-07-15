@@ -1,0 +1,72 @@
+/*
+  Editor-page additions: the glyph grid living inside #canvas-panel.
+
+  The grid is kept at the true printable width of the TM-T88IV
+  (72.2 mm = 512 dots @ 180 dpi), exactly like the old Glyphs preview:
+  the whole Editor effect pipeline and serializeGrid work in physical
+  mm, so the on-screen grid is a 1:1 preview of the receipt. It is
+  centered inside #canvas-panel and scrolls vertically for long
+  messages. Symbol row alignment classes are ported from the old
+  preview (words centered, . , right-aligned, ! ? left-aligned).
+*/
+
+.panel--canvas {
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+.glyph-grid {
+  position: relative;
+  width: 72.2mm;
+  max-width: 100%;
+  height: 100%;
+  flex-shrink: 0;
+  overflow-y: auto;
+  overflow-x: visible;
+}
+
+.grid-content {
+  position: relative;
+  min-height: 100%;
+  padding: calc(100cqw * 40 / var(--dw)) 0 calc(100cqw * 80 / var(--dw));
+}
+
+.symbol-row {
+  display: flex;
+  justify-content: center;
+}
+
+.symbol-row--left {
+  justify-content: flex-start;
+}
+
+.symbol-row--right {
+  justify-content: flex-end;
+}
+
+.symbol-row svg {
+  display: block;
+  max-width: none;
+}
+
+/* The stats panel gains a third line (print/store status), which does
+   not fit the original two-line height — extend the region by one row. */
+.region-stats {
+  grid-row: 4 / 9;
+}
+
+#status-line {
+  font-size: calc(100cqw * 28 / var(--dw));
+}
+
+/* Generation / error feedback inside the otherwise empty panel */
+.grid-message {
+  padding: calc(100cqw * 24 / var(--dw));
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: calc(100cqw * 28 / var(--dw));
+  line-height: 1.5;
+  color: var(--color-black);
+  white-space: pre-line;
+}

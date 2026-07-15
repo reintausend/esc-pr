@@ -1,0 +1,29 @@
+/*
+  Design reference: Figma frame at 2560 x 1440 (16:9), laid out on a
+  16 column x 24 row grid (160 x 60 px per cell at design size).
+
+  --dw is the design width in px. Every scaled value in the component
+  files is written as:
+    calc(100cqw * <figma-px-value> / var(--dw))
+  so it stays pixel-accurate to the Figma file while scaling fluidly
+  with the .stage container (see grid.css). If the design is ever
+  re-exported at a different size, only --dw needs to change.
+*/
+
+:root {
+  --dw: 2560;
+
+  /* Colors */
+  --color-bg: #f7f7f7;
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-accent: #a719ff;
+
+  /* Fonts — replace src in fonts.css once the real files are added
+     to assets/fonts/. Fallbacks keep the layout usable until then. */
+  --font-display: "Roobert", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Typestar Normal", "Courier New", monospace;
+
+  /* Shared border weight used across outlined components */
+  --border-w: max(1px, calc(100cqw * 2 / var(--dw)));
+}

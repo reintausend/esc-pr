@@ -1,0 +1,132 @@
+/*
+  Page-level regions for the start screen (index.html) and the message
+  entry page (entry.html). Both reuse the 16:9 .stage grid (16 x 24)
+  and the existing design tokens — no new visual language, only new
+  placements. The editor stage keeps its regions in layout.css.
+*/
+
+/* Shared: the ticker bar spans the full top, same as on the editor
+   stage (layout.css is not loaded on these pages). Without an explicit
+   placement the marquee track would blow the grid out sideways. */
+.region-ticker {
+  grid-column: 1 / 17;
+  grid-row: 1 / 3;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* ---- Start screen ---- */
+
+.region-start-title {
+  grid-column: 2 / 16;
+  grid-row: 9 / 13;
+  display: flex;
+  align-items: flex-end;
+}
+
+.start-title {
+  color: var(--color-black);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: calc(100cqw * 120 / var(--dw));
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.region-start-subtitle {
+  grid-column: 2 / 16;
+  grid-row: 13 / 15;
+  display: flex;
+  align-items: flex-start;
+}
+
+.start-subtitle {
+  color: var(--color-black);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: calc(100cqw * 40 / var(--dw));
+  line-height: 1.4;
+}
+
+.region-start-action {
+  grid-column: 2 / 6;
+  grid-row: 17 / 19;
+}
+
+/* ---- Message entry ---- */
+
+.region-entry-label {
+  grid-column: 2 / 16;
+  grid-row: 8 / 9;
+  display: flex;
+  align-items: flex-end;
+}
+
+.entry-label {
+  color: var(--color-black);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: calc(100cqw * 40 / var(--dw));
+  line-height: 1.2;
+}
+
+.region-entry-input {
+  grid-column: 2 / 16;
+  grid-row: 10 / 13;
+}
+
+.entry-input {
+  width: 100%;
+  height: 100%;
+  padding: 0 calc(100cqw * 32 / var(--dw));
+
+  background: var(--color-white);
+  color: var(--color-black);
+  border: var(--border-w) solid var(--color-black);
+  border-radius: 0;
+
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: calc(100cqw * 64 / var(--dw));
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.entry-input::placeholder {
+  color: #b5b5b5;
+}
+
+.entry-input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.region-entry-hint {
+  grid-column: 2 / 16;
+  grid-row: 13 / 14;
+  display: flex;
+  align-items: center;
+}
+
+.entry-hint {
+  color: var(--color-black);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: calc(100cqw * 28 / var(--dw));
+  line-height: 1.4;
+  opacity: 0.55;
+}
+
+.region-entry-create {
+  grid-column: 12 / 16;
+  grid-row: 15 / 17;
+}
+
+.region-entry-back {
+  grid-column: 1 / 2;
+  grid-row: 4 / 5;
+}
+
+.region-entry-back .btn {
+  border-left: none;
+}

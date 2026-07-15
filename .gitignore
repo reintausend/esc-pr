@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.venv-verify/
+
+# Print server output
+barcode_system/epson/out/
+
+# Local test scratch (throwaway playwright installs)
+.smoke/
+
+# Node
+node_modules/

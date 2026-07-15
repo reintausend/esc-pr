@@ -1,0 +1,6 @@
+# Python-Abhängigkeiten für den Glyphs-Project-Druckserver
+# und das portable Modul printer_setup/ (Epson TM-T88IV über USB).
+
+-r printer_setup/requirements.txt
+flask>=3.0
+flask-cors>=4.0

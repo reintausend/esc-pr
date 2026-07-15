@@ -1,0 +1,38 @@
+/*
+  Panel components: the main (empty) canvas area and the word/character
+  stat readout. Both are static containers for now — the merged project
+  is expected to render into #canvas-panel and update #word-count /
+  #char-count.
+*/
+
+.panel {
+  width: 100%;
+  height: 100%;
+}
+
+.panel--canvas {
+  background: var(--color-white);
+  border: var(--border-w) solid var(--color-black);
+}
+
+.panel--stats {
+  background: var(--color-white);
+  border: max(1px, calc(100cqw * 1 / var(--dw))) solid var(--color-black);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: calc(100cqw * 22 / var(--dw)) calc(100cqw * 24 / var(--dw));
+}
+
+.panel--stats .stats {
+  color: var(--color-black);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: calc(100cqw * 40 / var(--dw));
+  line-height: 1.6;
+}
+
+.panel--stats .stats span {
+  font-family: inherit;
+}

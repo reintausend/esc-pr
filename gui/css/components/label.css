@@ -1,0 +1,95 @@
+/*
+  Label component
+  ---------------
+  Non-interactive caption for the slider to its right. Same visual
+  footprint as an outlined sidebar control (white bg, black outline,
+  left-aligned text), but not a button.
+
+  While its paired slider is being dragged, the name slides up and a
+  live percentage takes its place (see label.js + slider events).
+  Markup after init:
+    .label > .label__viewport > .label__stack
+      > .label__name | .label__value
+*/
+
+.label {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0 calc(100cqw * 16 / var(--dw));
+
+  background: var(--color-white);
+  color: var(--color-black);
+  border: var(--border-w) solid var(--color-black);
+  border-left: none;
+
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: calc(100cqw * 32 / var(--dw));
+  line-height: 1;
+
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.label__viewport {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.label__stack {
+  display: flex;
+  flex-direction: column;
+  height: 200%;
+  transition: transform 0.28s ease;
+  will-change: transform;
+}
+
+.label.is-revealing .label__stack {
+  transform: translateY(-50%);
+}
+
+.label__name,
+.label__value {
+  flex: 0 0 50%;
+  display: flex;
+  align-items: center;
+  height: 50%;
+  white-space: nowrap;
+}
+
+/* Number left-aligned with a fixed width per digit count (1 / 2 / 3),
+   so the % sits at one of three stable positions and does not jitter
+   while the value stays in the same digit bucket (e.g. 10 → 99). */
+.label__value-num {
+  display: inline-block;
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+}
+
+.label__value-num[data-digits="1"] {
+  width: 1ch;
+}
+
+.label__value-num[data-digits="2"] {
+  width: 2ch;
+}
+
+.label__value-num[data-digits="3"] {
+  width: 3ch;
+}
+
+.label__value-unit {
+  /* Slight gap so % sits a bit to the right of the number */
+  margin-left: 0.15em;
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .label__stack {
+    transition: none;
+  }
+}

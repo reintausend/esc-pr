@@ -1,0 +1,176 @@
+<!--
+  Zweck dieser Datei:
+  Preview-Seite des Glyphs Project.
+  Zeigt ein zentriertes 72,2-mm-Grid (druckbare Breite TM-T88IV, oben 2 cm Abstand),
+  auf dem die vom Generator erzeugten Symbole angeordnet werden (scrollbar nach
+  unten), einen Informationskasten rechts, das Tweak-Panel links neben dem
+  Raster (Illustrator-Referenz), Save/Back links unten und Print rechts unten.
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glyphs Project - Preview</title>
+  <link rel="stylesheet" href="preview.css">
+</head>
+<body>
+  <main class="preview-layout">
+    <div class="preview-row">
+      <aside class="left-column">
+        <div class="tweak-panel" id="tweak-panel" aria-label="Tweak">
+          <h2 class="tweak-panel__title">Tweak</h2>
+
+          <fieldset class="tweak-panel__section">
+            <legend>Stärke</legend>
+
+            <label class="tweak-panel__row" for="tweak-horizontal">
+              <span class="tweak-panel__label">Horizontal:</span>
+              <input type="range" id="tweak-horizontal" min="0" max="100" value="0">
+              <input
+                type="number"
+                id="tweak-horizontal-value"
+                class="tweak-panel__number"
+                min="0"
+                max="100"
+                value="0"
+                aria-label="Horizontal in Prozent"
+              >
+              <span class="tweak-panel__unit">%</span>
+            </label>
+
+            <label class="tweak-panel__row" for="tweak-vertical">
+              <span class="tweak-panel__label">Vertikal:</span>
+              <input type="range" id="tweak-vertical" min="0" max="100" value="0">
+              <input
+                type="number"
+                id="tweak-vertical-value"
+                class="tweak-panel__number"
+                min="0"
+                max="100"
+                value="0"
+                aria-label="Vertikal in Prozent"
+              >
+              <span class="tweak-panel__unit">%</span>
+            </label>
+
+            <div class="tweak-panel__mode">
+              <label class="tweak-panel__radio">
+                <input type="radio" name="tweak-mode" value="relative" checked>
+                Relativ
+              </label>
+              <label class="tweak-panel__radio">
+                <input type="radio" name="tweak-mode" value="absolute">
+                Absolut
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="tweak-panel__section">
+            <legend>Ändern</legend>
+
+            <label class="tweak-panel__check">
+              <input type="checkbox" id="tweak-anchors" checked>
+              Ankerpunkte
+            </label>
+            <label class="tweak-panel__check">
+              <input type="checkbox" id="tweak-in-handles" checked>
+              Hinführende Griffe
+            </label>
+            <label class="tweak-panel__check">
+              <input type="checkbox" id="tweak-out-handles">
+              Wegführende Griffe
+            </label>
+          </fieldset>
+
+          <fieldset class="tweak-panel__section">
+            <legend>Kanten</legend>
+
+            <label class="tweak-panel__row" for="tweak-rounding">
+              <span class="tweak-panel__label">Abrunden:</span>
+              <input type="range" id="tweak-rounding" min="0" max="100" value="0">
+              <input
+                type="number"
+                id="tweak-rounding-value"
+                class="tweak-panel__number"
+                min="0"
+                max="100"
+                value="0"
+                aria-label="Kanten abrunden in Prozent"
+              >
+              <span class="tweak-panel__unit">%</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="tweak-panel__section">
+            <legend>Darstellung</legend>
+
+            <label class="tweak-panel__check">
+              <input type="checkbox" id="tweak-display">
+              Outline (verschmolzen)
+            </label>
+
+            <label class="tweak-panel__row" for="tweak-stroke">
+              <span class="tweak-panel__label">Strichstärke:</span>
+              <input type="range" id="tweak-stroke" min="0" max="100" value="0">
+              <input
+                type="number"
+                id="tweak-stroke-value"
+                class="tweak-panel__number"
+                min="0"
+                max="100"
+                value="0"
+                aria-label="Strichstärke in Prozent"
+              >
+              <span class="tweak-panel__unit">%</span>
+            </label>
+          </fieldset>
+
+          <fieldset class="tweak-panel__section">
+            <legend>Größe</legend>
+
+            <label class="tweak-panel__row" for="tweak-size">
+              <span class="tweak-panel__label">Skalierung:</span>
+              <input type="range" id="tweak-size" min="0" max="100" value="35">
+              <input
+                type="number"
+                id="tweak-size-value"
+                class="tweak-panel__number"
+                min="0"
+                max="100"
+                value="35"
+                aria-label="Größe in Prozent"
+              >
+              <span class="tweak-panel__unit">%</span>
+            </label>
+          </fieldset>
+
+          <button type="button" class="tweak-panel__randomize" id="tweak-randomize">
+            Randomize
+          </button>
+        </div>
+
+        <div class="side-buttons">
+          <button type="button" class="side-button" id="download-button">Save SVG</button>
+          <button type="button" class="side-button" id="back-button">Back</button>
+        </div>
+      </aside>
+
+      <section class="grid-column">
+        <div class="glyph-grid" id="glyph-grid">
+          <div class="grid-content" id="grid-content"></div>
+        </div>
+      </section>
+
+      <aside class="info-box" id="info-box">
+        Generator wird geladen ...
+      </aside>
+    </div>
+
+    <button type="button" class="side-button print-button" id="print-button">Print</button>
+  </main>
+
+  <script src="Editor/tools/paperjs-v0/dist/paper-core.min.js"></script>
+  <script type="module" src="preview.js"></script>
+</body>
+</html>

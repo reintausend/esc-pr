@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Secret Receipts — Nachricht</title>
+
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/grid.css" />
+  <link rel="stylesheet" href="css/pages.css" />
+  <link rel="stylesheet" href="css/components/button.css" />
+  <link rel="stylesheet" href="css/components/ticker.css" />
+</head>
+<body>
+  <main class="stage">
+    <div class="region-ticker">
+      <div class="ticker" data-component="ticker" data-speed="120">
+        <div class="ticker__track">
+          <span class="ticker__source">Gib deine geheime Nachricht ein.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="region-entry-back">
+      <button class="btn btn--filled" type="button" data-component="button" data-action="back">
+        Back
+      </button>
+    </div>
+
+    <form id="create-form" style="display: contents;">
+      <div class="region-entry-label">
+        <label class="entry-label" for="message-input">Deine Nachricht</label>
+      </div>
+
+      <div class="region-entry-input">
+        <input
+          id="message-input"
+          class="entry-input"
+          name="message"
+          type="text"
+          placeholder="ENTER MESSAGE"
+          autocomplete="off"
+          spellcheck="false"
+          required
+        />
+      </div>
+
+      <div class="region-entry-hint">
+        <p class="entry-hint">Erlaubt: A–Z, Ä Ö Ü, 0–9, ! ? &amp; ( ) . , und Leerzeichen</p>
+      </div>
+
+      <div class="region-entry-create">
+        <button class="btn btn--filled" type="submit">Create</button>
+      </div>
+    </form>
+  </main>
+
+  <script type="module" src="js/main.js"></script>
+  <script type="module" src="js/entry.js"></script>
+</body>
+</html>

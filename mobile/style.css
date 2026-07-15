@@ -1,0 +1,296 @@
+/*
+  ESC-PR Vector Decryption Client — mobile-first phone page.
+
+  Uses the GUI design tokens (gui/css/variables.css + fonts.css:
+  Roobert display, Typestar mono, purple accent, black 2px borders on
+  white) in a portrait scroll layout instead of the 16:9 stage grid.
+  Fixed header on top, fixed two-tab navigation at the bottom.
+*/
+
+:root {
+  /* Fixed px equivalents of the stage tokens for a scrolling page */
+  --line: max(1px, 2px);
+  --pad: 16px;
+  --tabbar-h: 56px;
+  --topbar-h: 64px;
+}
+
+html,
+body {
+  background: var(--color-bg);
+  color: var(--color-black);
+  font-family: var(--font-display);
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The GUI reset pins the body for the 16:9 stage (flex-centered,
+   overflow hidden) — this page is a normal scrolling document. */
+body {
+  display: block;
+  overflow: auto;
+  min-height: 100dvh;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ---------- top bar ---------- */
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  min-height: var(--topbar-h);
+  padding: 10px var(--pad);
+  padding-top: calc(10px + env(safe-area-inset-top));
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  background: var(--color-accent);
+  color: var(--color-white);
+}
+
+.topbar__title {
+  font-size: 17px;
+  line-height: 1.25;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.topbar__mode {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  white-space: nowrap;
+  opacity: 0.85;
+}
+
+/* ---------- views ---------- */
+
+.view {
+  display: none;
+  padding: calc(var(--topbar-h) + env(safe-area-inset-top) + 20px) var(--pad)
+    calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 24px);
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.view.is-active {
+  display: block;
+}
+
+.hint {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+
+.hint small {
+  display: block;
+  margin-top: 8px;
+  font-size: 11px;
+  opacity: 0.55;
+}
+
+.section-title {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 24px 0 8px;
+}
+
+/* ---------- buttons (GUI idiom: black fill / outlined) ---------- */
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 52px;
+  padding: 0 16px;
+
+  background: var(--color-white);
+  color: var(--color-black);
+  border: var(--line) solid var(--color-black);
+
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 1;
+
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.btn:active {
+  background: #dcdcdc;
+}
+
+.btn.btn--filled {
+  background: var(--color-black);
+  color: var(--color-white);
+  border-color: var(--color-black);
+}
+
+.btn.btn--filled:active {
+  background: #3a3a3a;
+}
+
+/* ---------- scanner ---------- */
+
+.scanner {
+  position: relative;
+  border: var(--line) solid var(--color-black);
+  background: var(--color-black);
+  overflow: hidden;
+}
+
+.scanner video {
+  display: block;
+  width: 100%;
+  max-height: 62vh;
+  object-fit: cover;
+}
+
+.scanner__status {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 8px 12px;
+  background: var(--color-accent);
+  color: var(--color-white);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+/* ---------- result ---------- */
+
+.result__text {
+  border: var(--line) solid var(--color-black);
+  background: var(--color-white);
+  padding: 18px 16px;
+  font-family: var(--font-mono);
+  font-size: 22px;
+  line-height: 1.4;
+  text-transform: uppercase;
+  word-break: break-word;
+}
+
+.result__image {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  border: var(--line) solid var(--color-black);
+  background: var(--color-white);
+}
+
+/* ---------- status log ---------- */
+
+.log {
+  border: var(--line) solid var(--color-black);
+  background: var(--color-white);
+  padding: 10px 12px;
+  min-height: 56px;
+  max-height: 140px;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.log .ok {
+  color: var(--color-accent);
+}
+
+.log .err {
+  color: #b3341f;
+}
+
+/* ---------- feed ---------- */
+
+.feed {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.feed__item {
+  border: var(--line) solid var(--color-black);
+  background: var(--color-white);
+  overflow: hidden;
+}
+
+.feed__item img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: top;
+}
+
+.feed__empty {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  opacity: 0.55;
+  text-align: center;
+  margin-top: 40px;
+}
+
+/* ---------- bottom tab bar ---------- */
+
+.tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  height: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+
+  display: flex;
+  background: var(--color-white);
+  border-top: var(--line) solid var(--color-black);
+}
+
+.tabbar__tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--color-white);
+  color: var(--color-black);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.tabbar__tab + .tabbar__tab {
+  border-left: var(--line) solid var(--color-black);
+}
+
+.tabbar__tab.is-active {
+  background: var(--color-black);
+  color: var(--color-white);
+}
