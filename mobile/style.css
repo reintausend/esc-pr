@@ -222,26 +222,39 @@ body {
   color: #b3341f;
 }
 
-/* ---------- feed ---------- */
+/* ---------- feed ----------
+   One continuous vertical stream, newest → oldest. No cards/grid —
+   images stack edge-to-edge at full width. */
+
+#view-feed {
+  max-width: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#view-feed .hint,
+#view-feed .feed__empty {
+  padding-left: var(--pad);
+  padding-right: var(--pad);
+}
 
 .feed {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  display: block;
+  width: 100%;
+  background: var(--color-white);
 }
 
 .feed__item {
-  border: var(--line) solid var(--color-black);
+  margin: 0;
+  padding: 0;
+  border: none;
   background: var(--color-white);
-  overflow: hidden;
 }
 
 .feed__item img {
   display: block;
   width: 100%;
-  aspect-ratio: 3 / 4;
-  object-fit: cover;
-  object-position: top;
+  height: auto;
 }
 
 .feed__empty {

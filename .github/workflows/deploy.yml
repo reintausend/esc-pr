@@ -1,4 +1,4 @@
-name: Deploy site to GitHub Pages
+name: Deploy phone client to GitHub Pages
 
 on:
   push:
@@ -23,11 +23,44 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
-      # Publish the whole repo so mobile/ can import from
-      # barcode_system/site/shared/ and gui/css/ with relative paths.
-      # The phone page ends up at <pages-url>/mobile/.
+
+      # Publish only what phones need. The terminal (gui HTML, generator,
+      # epson print server) stays local on the installation computer.
+      # Folder layout in the artifact mirrors the repo so mobile/'s
+      # relative imports keep working:
+      #   mobile/  →  ../barcode_system/site/shared/
+      #            →  ../gui/css/  +  ../gui/assets/fonts/
+      - name: Assemble phone-only site
+        run: |
+          set -euo pipefail
+          mkdir -p _site/mobile
+          mkdir -p _site/gui/css
+          mkdir -p _site/gui/assets
+          mkdir -p _site/barcode_system/site
+
+          cp -R mobile/. _site/mobile/
+          cp -R gui/css/. _site/gui/css/
+          cp -R gui/assets/fonts _site/gui/assets/fonts
+          cp -R barcode_system/site/shared _site/barcode_system/site/shared
+
+          # Root landing → phone client
+          cat > _site/index.html <<'EOF'
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="refresh" content="0; url=mobile/" />
+  <title>ESC-PR</title>
+  <link rel="canonical" href="mobile/" />
+</head>
+<body>
+  <p><a href="mobile/">ESC-PR Vector Decryption Client</a></p>
+</body>
+</html>
+EOF
+
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4

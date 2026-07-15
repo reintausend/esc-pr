@@ -38,15 +38,23 @@ station and phone client must share the same browser.
 
 ## Deployment (phones need HTTPS)
 
-The terminal computer runs everything locally. Personal phones need the
-`mobile/` page over HTTPS (camera requirement) plus Supabase as shared
-storage:
+The terminal computer runs everything locally (`gui/` + print server).
+Personal phones need the `mobile/` page over **HTTPS** (camera requirement)
+plus Supabase as shared storage.
 
-1. Supabase: run `barcode_system/supabase/schema.sql` in the SQL editor,
-   copy Project URL + anon key into `barcode_system/site/shared/config.js`.
+GitHub Pages publishes **only the phone client** (not the terminal):
+
+- `mobile/`
+- `barcode_system/site/shared/` (config, store, tickcode)
+- `gui/css/` + `gui/assets/fonts/` (design tokens)
+
+1. Supabase: create a project, run `barcode_system/supabase/schema.sql` in
+   the SQL editor, copy Project URL + anon key into
+   `barcode_system/site/shared/config.js`.
 2. Push this repo to GitHub (`main`), enable Settings → Pages → Source:
-   **GitHub Actions**. The workflow publishes the repo; the phone page is
-   `https://<user>.github.io/<repo>/mobile/`.
+   **GitHub Actions**. Phone page:
+   `https://<user>.github.io/<repo>/mobile/`
+   (root URL redirects there).
 3. Put that URL into `decodeUrl` in `config.js` — it gets printed on the
    info receipt (part 2).
 

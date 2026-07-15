@@ -219,17 +219,28 @@ async function loadFeed() {
   feedLoading = true;
   try {
     const entries = await store.list();
-    el.feed.innerHTML = "";
-    el.feedEmpty.classList.toggle("hidden", entries.length > 0);
+    // Newest → oldest. Supabase already orders by created_at desc;
+    // localStorage uses unshift on insert. Re-sort defensively if timestamps exist.
+    entries.sort((a, b) => {
+      const ta = a.created_at ? Date.parse(a.created_at) : 0;
+      const tb = b.created_at ? Date.parse(b.created_at) : 0;
+      if (ta || tb) return tb - ta;
+      return 0; // keep store order
+    });
 
-    // Graphics only — the message text is deliberately never rendered here.
+    el.feed.innerHTML = "";
+    const hasGraphics = entries.some((e) => e.image_url);
+    el.feedEmpty.classList.toggle("hidden", hasGraphics);
+    document.querySelector("#view-feed .hint")?.classList.toggle("hidden", hasGraphics);
+
+    // Continuous stream: graphics only — never the message text.
     for (const entry of entries) {
       if (!entry.image_url) continue;
       const item = document.createElement("figure");
       item.className = "feed__item";
       const img = document.createElement("img");
       img.src = entry.image_url;
-      img.alt = `graphic #${entry.code}`;
+      img.alt = "";
       img.loading = "lazy";
       item.appendChild(img);
       el.feed.appendChild(item);

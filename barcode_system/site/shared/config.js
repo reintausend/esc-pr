@@ -7,8 +7,9 @@
 // on the same machine (useful for development and demos).
 
 export const CONFIG = {
-  supabaseUrl: "", // e.g. "https://abcdefgh.supabase.co"
-  supabaseAnonKey: "",
+  // Base project URL only — no /rest/v1/ suffix (store.js adds that itself).
+  supabaseUrl: "https://pmywoucgcwotodroqyok.supabase.co",
+  supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBteXdvdWNnY3dvdG9kcm9xeW9rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQxMzk5NTAsImV4cCI6MjA5OTcxNTk1MH0.dzyA81cyCwjFNNSZQgiEnBJmVXJJF_Nc2JyJ0Pcis40",
   bucket: "artworks",
   table: "messages",
 
@@ -21,10 +22,8 @@ export const CONFIG = {
   //                           tick strip is the scannable barcode.
   printHelperUrl: "http://localhost:8740",
 
-  // Decode website URL printed on the info receipt (part 2): the mobile
-  // client at /mobile/ (e.g. "https://<user>.github.io/<repo>/mobile/").
-  // Placeholder until the site is live on GitHub Pages - update this then.
-  decodeUrl: "",
+  // Decode website URL printed on the info receipt (part 2).
+  decodeUrl: "https://reintausend.github.io/esc-pr/mobile/",
 
   // Epson TM-T88IV: 180 dpi, 512 printable dots per line on 80 mm paper.
   printWidthDots: 512,

@@ -87,12 +87,25 @@ Automated browser run (Playwright + Chrome, offline localStorage mode; script an
   - **Feed** — all created graphics from the store, newest first, images only; message text is never rendered in the feed.
   - Uses GUI design tokens (`gui/css/variables.css`, `fonts.css`, purple accent, black 2 px borders) in a portrait scroll layout; overrides the stage-specific body reset.
 - **Git:** repo initialized at the workspace root; nested `barcode_system/.git` + `.gitignore` + `.github` removed (old history remains on the original GitHub remote). Root `.gitignore` covers venvs, `__pycache__`, `.DS_Store`, print output, local test scratch.
-- **Deploy:** workflow moved to root (`.github/workflows/deploy.yml`), publishes the whole repo to GitHub Pages so `mobile/` can import from `barcode_system/` and `gui/` with relative paths. Phone URL: `https://<user>.github.io/<repo>/mobile/`.
-- Verified in a 390×844 viewport: tabs switch (camera stops when leaving Scan), feed renders seeded store entries without exposing text, no page errors (script in `docs/smoke-test/mobile.mjs`).
+- **Deploy:** workflow at `.github/workflows/deploy.yml` assembles a phone-only
+  artifact (`mobile/` + `barcode_system/site/shared/` + `gui/css` + fonts). The
+  terminal (`gui` HTML, generator, epson) is **not** published. Root
+  `index.html` redirects to `/mobile/`.
+- Feed: continuous full-width vertical stream, newest → oldest, no grid/cards;
+  hint hides once graphics exist; message text never shown in the feed.
+- Verified in a 390×844 viewport: tabs switch (camera stops when leaving Scan),
+  feed renders seeded store entries without exposing text, no page errors
+  (script in `docs/smoke-test/mobile.mjs`).
 
 ## Open items / deferred
 
-- **Deployment (user steps):** create the GitHub repo, push `main`, enable Pages (Settings → Pages → Source: GitHub Actions). Then set `decodeUrl` in `barcode_system/site/shared/config.js` to the live `/mobile/` URL so it prints on the info receipt.
-- **Supabase (user steps):** run `barcode_system/supabase/schema.sql` in the SQL editor, then fill `supabaseUrl` + `supabaseAnonKey` in `barcode_system/site/shared/config.js`. Planned later: also store the SVGs.
+- **Deployment (user steps):** create the GitHub repo, push `main`, enable Pages
+  (Settings → Pages → Source: GitHub Actions). Then set `decodeUrl` in
+  `barcode_system/site/shared/config.js` to the live `/mobile/` URL so it
+  prints on the info receipt.
+- **Supabase (user steps):** create a Supabase project, run
+  `barcode_system/supabase/schema.sql` in the SQL editor, then fill
+  `supabaseUrl` + `supabaseAnonKey` in `barcode_system/site/shared/config.js`.
+  Planned later: also store the SVGs.
 - **Start screen content:** built minimal; final copy/visuals to be decided.
 - **Tweak slider direction:** Resolved — tweak sliders are now 0…100 (same as the Editor effect). Defaults: rounded/stroke/tweak = 0, size = 35.
