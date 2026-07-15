@@ -28,8 +28,8 @@ python3 -m http.server 8000
 # Phone client (same browser in offline mode): http://localhost:8000/mobile/
 
 # Print server (required for printing, Epson TM-T88IV over USB)
-cd barcode_system/epson
-./start_print_server.sh   # http://localhost:8740
+./start-print-server.sh   # http://localhost:8740
+# Leave that terminal open while using Print in the GUI.
 ```
 
 Without Supabase keys in `barcode_system/site/shared/config.js` the system
