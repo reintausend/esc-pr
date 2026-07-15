@@ -42,22 +42,10 @@ jobs:
           cp -R gui/css/. _site/gui/css/
           cp -R gui/assets/fonts _site/gui/assets/fonts
           cp -R barcode_system/site/shared _site/barcode_system/site/shared
+          cp pages-root/index.html _site/index.html
 
-          # Root landing → phone client
-          cat > _site/index.html <<'EOF'
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="refresh" content="0; url=mobile/" />
-  <title>ESC-PR</title>
-  <link rel="canonical" href="mobile/" />
-</head>
-<body>
-  <p><a href="mobile/">ESC-PR Vector Decryption Client</a></p>
-</body>
-</html>
-EOF
+          echo "Assembled site:"
+          find _site -type f | sort | head -50
 
       - uses: actions/upload-pages-artifact@v3
         with:
