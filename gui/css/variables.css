@@ -17,12 +17,11 @@
   --color-bg: #f7f7f7;
   --color-black: #000000;
   --color-white: #ffffff;
-  --color-accent: #a719ff;
+  --color-accent: #00ff44;
 
-  /* Fonts — replace src in fonts.css once the real files are added
-     to assets/fonts/. Fallbacks keep the layout usable until then. */
+  /* Single typeface across the whole interface (Typestar was dropped
+     in the green redesign — all former --font-mono uses are Roobert). */
   --font-display: "Roobert", "Helvetica Neue", Arial, sans-serif;
-  --font-mono: "Typestar Normal", "Courier New", monospace;
 
   /* Shared border weight used across outlined components */
   --border-w: max(1px, calc(100cqw * 2 / var(--dw)));

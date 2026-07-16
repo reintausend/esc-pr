@@ -1,10 +1,16 @@
 # Fonts
 
-Drop the font files here:
+The interface uses a single typeface:
 
-- `Roobert` (weight 500 / Medium) — used for all UI labels and the ticker
-- `Typestar Normal` — used for the word/character count readout
+- `Roobert` (weight 500 / Medium) — used for everything
+  (`roobert/Roobert-Medium.otf`, declared in `css/fonts.css`).
 
-Then uncomment and adjust the `@font-face` rules in [`css/fonts.css`](../../css/fonts.css) to point at the actual filenames/formats (e.g. `.woff2`).
+The `roobert/` folder contains more weights/styles if they're ever
+needed; add `@font-face` blocks in `css/fonts.css` the same way.
 
-Until real files are added, `css/variables.css` falls back to `Helvetica Neue`/Arial for `--font-display` and a monospace font for `--font-mono`, so the layout stays usable.
+The `typestar/` folder is kept for reference only — Typestar was
+dropped from the design in the 2026-07 green redesign
+(see `docs/PLAN_redesign.md`).
+
+If font files go missing, `css/variables.css` falls back to
+`Helvetica Neue`/Arial for `--font-display`, so the layout stays usable.

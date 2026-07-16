@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FR Interface</title>
+  <title>ESC-PR — Editor</title>
 
   <link rel="stylesheet" href="css/reset.css" />
   <link rel="stylesheet" href="css/variables.css" />
@@ -21,15 +21,13 @@
 <body>
   <main class="stage">
     <div class="region-ticker">
-      <div class="ticker" data-component="ticker" data-speed="120">
-        <div class="ticker__track">
-          <span class="ticker__source">Mission erfolgreich. Wir treffen uns um Mitternacht.</span>
-        </div>
+      <div class="ticker">
+        <span class="ticker__text" id="ticker-text">Your message</span>
       </div>
     </div>
 
     <div class="region-back">
-      <button class="btn btn--filled" type="button" data-component="button" data-action="back">
+      <button class="btn" type="button" data-component="button" data-action="back">
         Back
       </button>
     </div>
@@ -77,7 +75,7 @@
     </div>
 
     <div class="region-randomize">
-      <button class="btn btn--filled" type="button" data-component="button" data-action="randomize">
+      <button class="btn" type="button" data-component="button" data-action="randomize">
         Randomize
       </button>
     </div>
@@ -92,12 +90,12 @@
 
     <div class="region-stats">
       <div class="panel panel--stats">
-        <p class="stats">Wörter: <span id="word-count">0</span><br />Zeichen: <span id="char-count">0</span><br /><span id="status-line">Bereit</span></p>
+        <p class="stats">Words: <span id="word-count">0</span><br />Characters: <span id="char-count">0</span><br /><span id="status-line">Ready</span></p>
       </div>
     </div>
 
     <div class="region-print">
-      <button class="btn btn--filled" type="button" data-component="button" data-action="print">
+      <button class="btn" type="button" data-component="button" data-action="print">
         Print
       </button>
     </div>

@@ -1,47 +1,29 @@
 /*
-  Ticker component (top marquee bar)
-  -----------------------------------
-  Write the message once in .ticker__source — ticker.js repeats it as
-  [message] +++ [message] +++ … with enough copies to fill the bar.
-  Spacing around the +++ divider is handled in CSS.
+  Ticker component (top bar)
+  ---------------------------
+  Formerly a marquee; now a static bar. The message is written once in
+  .ticker__text, centered, black on the accent green.
 */
 
 .ticker {
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 100%;
   height: 100%;
   background: var(--color-accent);
   overflow: hidden;
 }
 
-.ticker__track {
-  display: flex;
-  flex-wrap: nowrap;
-  white-space: nowrap;
-  will-change: transform;
-}
-
-.ticker__source {
-  display: none;
-}
-
-.ticker__segment {
-  display: inline-flex;
-  flex-shrink: 0;
-  align-items: center;
-  white-space: nowrap;
-}
-
-.ticker__text,
-.ticker__divider {
-  color: var(--color-white);
+.ticker__text {
+  color: var(--color-black);
   font-family: var(--font-display);
   font-weight: 500;
   font-size: calc(100cqw * 40 / var(--dw));
   line-height: 1.2;
-}
-
-.ticker__divider {
-  padding: 0 calc(100cqw * var(--ticker-gap, 40) / var(--dw));
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 96%;
 }

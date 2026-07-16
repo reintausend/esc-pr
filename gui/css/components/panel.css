@@ -27,7 +27,7 @@
 
 .panel--stats .stats {
   color: var(--color-black);
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
   font-weight: 500;
   font-size: calc(100cqw * 40 / var(--dw));
   line-height: 1.6;

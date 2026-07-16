@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ESC-PR Vector Encryption Terminal</title>
+  <title>ESC-PR — Finished</title>
 
   <link rel="stylesheet" href="css/reset.css" />
   <link rel="stylesheet" href="css/variables.css" />
@@ -14,20 +14,23 @@
 </head>
 <body>
   <main class="stage">
-    <div class="graphics-lanes" id="graphics-lanes" aria-hidden="true"></div>
-
-    <div class="region-start-panel">
-      <h1 class="start-title">ESC-PR<br />Vector Encryption<br />Terminal</h1>
+    <div class="region-finish-panel">
+      <h1 class="finish-title">Message encrypted successfully.</h1>
+      <p class="finish-text">
+        You can now pass it on and let the recipient decrypt it with the
+        ESC-PR Vector Decryption Client (mobile web app). The link is
+        printed on your receipt.
+      </p>
     </div>
 
-    <div class="region-start-action">
-      <button class="btn" type="button" data-component="button" data-action="start">
-        Start
+    <div class="region-finish-action">
+      <button class="btn" type="button" data-component="button" data-action="start-over">
+        Start Over
       </button>
     </div>
   </main>
 
   <script type="module" src="js/main.js"></script>
-  <script type="module" src="js/start.js"></script>
+  <script type="module" src="js/finish.js"></script>
 </body>
 </html>

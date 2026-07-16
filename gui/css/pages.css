@@ -1,132 +1,224 @@
 /*
-  Page-level regions for the start screen (index.html) and the message
-  entry page (entry.html). Both reuse the 16:9 .stage grid (16 x 24)
-  and the existing design tokens — no new visual language, only new
-  placements. The editor stage keeps its regions in layout.css.
-*/
+  Page-level regions for the start screen (index.html), the message
+  entry page (entry.html) and the finish page (finish.html). All reuse
+  the 16:9 .stage grid (16 x 24, 160 x 60 px cells at design size);
+  the editor keeps its regions in layout.css.
 
-/* Shared: the ticker bar spans the full top, same as on the editor
-   stage (layout.css is not loaded on these pages). Without an explicit
-   placement the marquee track would blow the grid out sideways. */
-.region-ticker {
-  grid-column: 1 / 17;
-  grid-row: 1 / 3;
-  min-width: 0;
-  overflow: hidden;
-}
+  Figma frame mapping (design px -> grid lines):
+    start panel    1280x720 @ (640,360)   -> cols 5/13,  rows 7/19
+    start button    320x120 @ (2080,1200) -> cols 14/16, rows 21/23
+    entry band     2560x360 @ (0,0)       -> cols 1/17,  rows 1/7
+    entry counter   480x60  @ (160,480)   -> cols 2/5,   rows 9/10
+    entry create    320x60  @ (2080,480)  -> cols 14/16, rows 9/10
+    entry paragraph 2240x360 @ (160,840)  -> cols 2/16,  rows 15/21
+*/
 
 /* ---- Start screen ---- */
 
-.region-start-title {
-  grid-column: 2 / 16;
-  grid-row: 9 / 13;
+/* 8 double-columns across the full stage (2 grid cols = 320 design-px
+   each). Active streams are chosen at random by js/start.js; inactive
+   lanes stay empty. Strips are positioned via transform. */
+.graphics-lanes {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.graphics-lane {
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.graphics-lane img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+}
+
+.region-start-panel {
+  grid-column: 5 / 13;
+  grid-row: 7 / 19;
+  z-index: 1;
+
+  background: var(--color-accent);
+  /* Figma: text at (60, 60) inside the 1280×720 panel */
+  padding: calc(100cqw * 60 / var(--dw));
+  overflow: hidden;
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .start-title {
+  margin: 0;
   color: var(--color-black);
   font-family: var(--font-display);
   font-weight: 500;
   font-size: calc(100cqw * 120 / var(--dw));
-  line-height: 1.05;
-  text-transform: uppercase;
-}
-
-.region-start-subtitle {
-  grid-column: 2 / 16;
-  grid-row: 13 / 15;
-  display: flex;
-  align-items: flex-start;
-}
-
-.start-subtitle {
-  color: var(--color-black);
-  font-family: var(--font-mono);
-  font-weight: 500;
-  font-size: calc(100cqw * 40 / var(--dw));
-  line-height: 1.4;
+  /* Figma line-height: 100px at 120px type */
+  line-height: calc(100cqw * 100 / var(--dw));
+  text-align: left;
 }
 
 .region-start-action {
-  grid-column: 2 / 6;
-  grid-row: 17 / 19;
+  grid-column: 14 / 16;
+  grid-row: 21 / 23;
+  z-index: 1;
+}
+
+.region-start-action .btn {
+  font-size: calc(100cqw * 58 / var(--dw));
 }
 
 /* ---- Message entry ---- */
 
-.region-entry-label {
-  grid-column: 2 / 16;
-  grid-row: 8 / 9;
-  display: flex;
-  align-items: flex-end;
-}
-
-.entry-label {
-  color: var(--color-black);
-  font-family: var(--font-mono);
-  font-weight: 500;
-  font-size: calc(100cqw * 40 / var(--dw));
-  line-height: 1.2;
-}
-
-.region-entry-input {
-  grid-column: 2 / 16;
-  grid-row: 10 / 13;
+/* The green band across the top is the input area: black text above a
+   single 5px underline for the whole block (x 160–2400, 58px above the
+   band's bottom). Text starts at 120px on one line, wraps by width
+   (mid-word allowed), grows upward to two lines, then shrinks so a
+   third line still fits and everything stays visible. */
+.region-entry-band {
+  grid-column: 1 / 17;
+  grid-row: 1 / 7;
+  position: relative;
+  background: var(--color-accent);
+  overflow: hidden;
 }
 
 .entry-input {
-  width: 100%;
-  height: 100%;
-  padding: 0 calc(100cqw * 32 / var(--dw));
+  --entry-fs: 120;
 
-  background: var(--color-white);
+  position: absolute;
+  left: calc(100cqw * 160 / var(--dw));
+  right: calc(100cqw * 160 / var(--dw));
+  bottom: calc(100cqw * 58 / var(--dw));
+  /* height set by JS — grows upward from the underline */
+
+  box-sizing: border-box;
+  width: auto;
+  height: calc(100cqw * 120 * 1.1 / var(--dw) + 0.3em + 100cqw * 16 / var(--dw));
+  max-height: calc(100% - 100cqw * 40 / var(--dw));
+  resize: none;
+  overflow: hidden;
+
+  background: transparent;
   color: var(--color-black);
-  border: var(--border-w) solid var(--color-black);
+  caret-color: var(--color-black);
+  border: none;
+  border-bottom: calc(100cqw * 5 / var(--dw)) solid var(--color-black);
   border-radius: 0;
 
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
   font-weight: 500;
-  font-size: calc(100cqw * 64 / var(--dw));
-  line-height: 1;
+  font-size: calc(100cqw * var(--entry-fs) / var(--dw));
+  line-height: 1.1;
+  /* em-based so Ö/Ä dots clear at any font size / stage scale */
+  padding: 0.3em 0 calc(100cqw * 16 / var(--dw));
+
   text-transform: uppercase;
+  text-align: left;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-all;
 }
 
 .entry-input::placeholder {
-  color: #b5b5b5;
+  color: rgba(0, 0, 0, 0.3);
 }
 
 .entry-input:focus {
   outline: none;
-  border-color: var(--color-accent);
 }
 
-.region-entry-hint {
-  grid-column: 2 / 16;
-  grid-row: 13 / 14;
+.region-entry-counter {
+  grid-column: 2 / 5;
+  grid-row: 9 / 10;
+}
+
+.entry-counter {
   display: flex;
   align-items: center;
-}
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 
-.entry-hint {
+  background: var(--color-accent);
   color: var(--color-black);
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
   font-weight: 500;
-  font-size: calc(100cqw * 28 / var(--dw));
-  line-height: 1.4;
-  opacity: 0.55;
+  font-size: calc(100cqw * 32 / var(--dw));
+  line-height: 1;
 }
 
 .region-entry-create {
-  grid-column: 12 / 16;
-  grid-row: 15 / 17;
+  grid-column: 14 / 16;
+  grid-row: 9 / 10;
 }
 
 .region-entry-back {
   grid-column: 1 / 2;
-  grid-row: 4 / 5;
+  grid-row: 8 / 9;
 }
 
 .region-entry-back .btn {
   border-left: none;
+}
+
+.region-entry-text {
+  grid-column: 2 / 16;
+  grid-row: 15 / 21;
+}
+
+.entry-text {
+  color: var(--color-black);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: calc(100cqw * 60 / var(--dw));
+  line-height: 1.25;
+}
+
+/* ---- Finish screen ---- */
+
+.region-finish-panel {
+  grid-column: 5 / 13;
+  grid-row: 7 / 19;
+
+  background: var(--color-accent);
+  padding: calc(100cqw * 60 / var(--dw));
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  gap: calc(100cqw * 48 / var(--dw));
+}
+
+.finish-title {
+  color: var(--color-black);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: calc(100cqw * 120 / var(--dw));
+  line-height: 1;
+}
+
+.finish-text {
+  color: var(--color-black);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: calc(100cqw * 44 / var(--dw));
+  line-height: 1.3;
+}
+
+.region-finish-action {
+  grid-column: 14 / 16;
+  grid-row: 21 / 23;
+}
+
+.region-finish-action .btn {
+  font-size: calc(100cqw * 58 / var(--dw));
 }

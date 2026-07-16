@@ -1,32 +1,25 @@
 /*
   Button component
   -----------------
-  Variants:
-    .btn                base outlined button (white bg, black border/text),
-                          left-aligned label with 16px padding — matches
-                          the Figma's outlined-button text offset
-                          (`left: 16px`, not centered). Not currently
-                          instantiated in index.html, kept as the
-                          general-purpose outlined button variant.
-    .btn.btn--filled     solid black button (Back, Randomize, Print), label
-                          centered — matches the Figma's filled buttons,
-                          whose text offsets work out to centered.
+  One style for every button in the interface:
+    default  black surface, white label
+    hover    accent-green surface, black label
+    active   slightly dimmed green (pressed feedback)
 
-  Rounded Edges, Stroke, Tweak Horizontal/Vertical, and Size are NOT
-  buttons — they're static labels for the sliders next to them, see
-  label.css.
+  The green buttons in the Figma frames are the hover state drawn
+  statically. Labels are centered.
 */
 
 .btn {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   width: 100%;
   height: 100%;
   padding: 0 calc(100cqw * 16 / var(--dw));
 
-  background: var(--color-white);
-  color: var(--color-black);
+  background: var(--color-black);
+  color: var(--color-white);
   border: var(--border-w) solid var(--color-black);
 
   font-family: var(--font-display);
@@ -40,26 +33,13 @@
 }
 
 .btn:hover {
-  background: #ececec;
+  background: var(--color-accent);
+  color: var(--color-black);
+  border-color: var(--color-accent);
 }
 
 .btn:active {
-  background: #dcdcdc;
-}
-
-.btn.btn--filled {
-  justify-content: center;
-  padding: 0;
-
-  background: var(--color-black);
-  color: var(--color-white);
-  border-color: var(--color-black);
-}
-
-.btn.btn--filled:hover {
-  background: #222222;
-}
-
-.btn.btn--filled:active {
-  background: #3a3a3a;
+  background: #00d93a;
+  color: var(--color-black);
+  border-color: #00d93a;
 }

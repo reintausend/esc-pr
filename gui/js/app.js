@@ -31,7 +31,7 @@ const wordCount = document.getElementById("word-count");
 const charCount = document.getElementById("char-count");
 const statusLine = document.getElementById("status-line");
 const fillOutlineSwitch = document.getElementById("fill-outline-switch");
-const tickerSource = document.querySelector(".ticker__source");
+const tickerText = document.getElementById("ticker-text");
 
 const query = new URLSearchParams(window.location.search);
 const message = (query.get("message") || "").trim();
@@ -144,7 +144,7 @@ function renderSymbols(arrangement) {
 /** Pick a random id (1..4095) not used by any stored entry. */
 function pickCode(entries) {
   const used = new Set(entries.map((e) => e.code));
-  if (used.size >= CODE_MAX) throw new Error("Alle Codes aufgebraucht.");
+  if (used.size >= CODE_MAX) throw new Error("All codes are used up.");
   let code;
   do {
     code = CODE_MIN + Math.floor(Math.random() * (CODE_MAX - CODE_MIN + 1));
@@ -158,7 +158,7 @@ async function sendToPrinter(blob) {
     headers: { "Content-Type": "image/png" },
     body: blob,
   });
-  if (!res.ok) throw new Error(`Druckserver antwortet ${res.status}`);
+  if (!res.ok) throw new Error(`Print server responded ${res.status}`);
   return res.json();
 }
 
@@ -169,7 +169,7 @@ async function sendInfoReceipt(code) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ code, link: CONFIG.decodeUrl || undefined }),
   });
-  if (!res.ok) throw new Error(`Druckserver antwortet ${res.status}`);
+  if (!res.ok) throw new Error(`Print server responded ${res.status}`);
   return res.json();
 }
 
@@ -179,32 +179,33 @@ async function onPrint() {
 
   try {
     const svg = rebuildTotalSvgFromGrid(gridContent);
-    if (!svg) throw new Error("Nichts zu drucken.");
+    if (!svg) throw new Error("Nothing to print.");
 
-    setStatus("Speichern …");
+    setStatus("Saving …");
     const entries = await store.list();
     const code = pickCode(entries);
 
     const canvas = await composeReceipt(svg);
     const blob = await canvasToPngBlob(canvas);
     await store.add({ id: crypto.randomUUID(), code, text: message }, blob);
-    setStatus(`Gespeichert als #${code} (${store.mode})`);
+    setStatus(`Saved as #${code} (${store.mode})`);
 
     try {
-      setStatus(`Drucke Teil 1 (Kunstwerk) …`);
+      setStatus(`Printing part 1 (artwork) …`);
       await sendToPrinter(blob);
-      setStatus(`Drucke Teil 2 (Info-Beleg #${code}) …`);
+      setStatus(`Printing part 2 (info receipt #${code}) …`);
       await sendInfoReceipt(code);
-      setStatus(`Gedruckt – Code #${code}`);
+      setStatus(`Printed – code #${code}`);
+      window.location.href = "finish.html";
     } catch (printError) {
       const hint =
         /Failed to fetch|Load failed|NetworkError|ECONNREFUSED/i.test(String(printError.message))
-          ? ` Druckserver nicht erreichbar – starte: cd barcode_system/epson && ./start_print_server.sh`
+          ? ` Print server not reachable – run: cd barcode_system/epson && ./start_print_server.sh`
           : "";
-      setStatus(`Gespeichert als #${code}, aber Druck fehlgeschlagen: ${printError.message}.${hint}`);
+      setStatus(`Saved as #${code}, but printing failed: ${printError.message}.${hint}`);
     }
   } catch (error) {
-    setStatus(`Fehler: ${error.message}`);
+    setStatus(`Error: ${error.message}`);
   } finally {
     printing = false;
   }
@@ -237,8 +238,8 @@ document.addEventListener("fr:action", (event) => {
 
 /* ---------- boot ---------- */
 
-if (tickerSource && message) {
-  tickerSource.textContent = message;
+if (tickerText && message) {
+  tickerText.textContent = message;
 }
 
 async function run() {
@@ -246,23 +247,23 @@ async function run() {
   updateStats(null);
 
   if (!message) {
-    showGridMessage("Keine Nachricht übergeben.\nBitte zurück zur Eingabe.");
-    setStatus("Keine Eingabe");
+    showGridMessage("No message provided.\nPlease go back to the entry screen.");
+    setStatus("No input");
     return;
   }
 
-  showGridMessage("Symbole werden generiert …");
-  setStatus(`Generiere … (${store.mode === "supabase" ? "Cloud" : "Offline"})`);
+  showGridMessage("Generating symbols …");
+  setStatus(`Generating … (${store.mode === "supabase" ? "Cloud" : "Offline"})`);
 
   try {
     const result = await generate(message);
     if (!result.ok) {
       showGridMessage(
         result.invalidChars?.length
-          ? `Unzulässige Zeichen in der Eingabe: ${result.invalidChars.join(" ")}`
-          : "Die Eingabe enthält keine verwertbaren Zeichen."
+          ? `Invalid characters in the input: ${result.invalidChars.join(" ")}`
+          : "The input contains no usable characters."
       );
-      setStatus("Ungültige Eingabe");
+      setStatus("Invalid input");
       return;
     }
 
@@ -273,14 +274,14 @@ async function run() {
     host = new PreviewToolHost({ gridContent });
     host.setOptions(optionsFromGui());
 
-    setStatus(store.mode === "supabase" ? "Bereit (Cloud)" : "Bereit (Offline)");
+    setStatus(store.mode === "supabase" ? "Ready (Cloud)" : "Ready (Offline)");
   } catch (error) {
     showGridMessage(
-      `Fehler beim Generieren: ${error.message}\n\n` +
-        "Hinweis: Die Seite muss über einen lokalen Webserver laufen, " +
-        "damit die SVG-Dateien geladen werden können."
+      `Generation failed: ${error.message}\n\n` +
+        "Note: the page must be served by a local web server " +
+        "so the SVG files can be loaded."
     );
-    setStatus("Fehler");
+    setStatus("Error");
   }
 }
 

@@ -63,7 +63,7 @@
 /* Generation / error feedback inside the otherwise empty panel */
 .grid-message {
   padding: calc(100cqw * 24 / var(--dw));
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
   font-weight: 500;
   font-size: calc(100cqw * 28 / var(--dw));
   line-height: 1.5;
