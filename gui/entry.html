@@ -11,11 +11,12 @@
   <link rel="stylesheet" href="css/grid.css" />
   <link rel="stylesheet" href="css/pages.css" />
   <link rel="stylesheet" href="css/components/button.css" />
+  <link rel="stylesheet" href="css/components/loading.css" />
 </head>
 <body>
   <main class="stage">
     <form id="create-form" style="display: contents;">
-      <div class="region-entry-band">
+      <div class="region-entry-band" id="black-bar" data-black-bar="6">
         <textarea
           id="message-input"
           class="entry-input"
@@ -25,22 +26,21 @@
           autocomplete="off"
           spellcheck="false"
           required
+          autofocus
         ></textarea>
       </div>
 
       <div class="region-entry-counter">
-        <div class="entry-counter">Remaining Words: <span id="words-left">10</span></div>
+        <div class="entry-counter"><span>Remaining Words:</span><span id="words-left">10</span></div>
       </div>
 
       <div class="region-entry-create">
-        <button class="btn" type="submit">Create</button>
+        <button class="btn" type="submit" id="create-btn">Create</button>
       </div>
     </form>
 
-    <div class="region-entry-back">
-      <button class="btn" type="button" data-component="button" data-action="back">
-        Back
-      </button>
+    <div class="region-entry-howto">
+      <h2 class="entry-howto-title">How it works</h2>
     </div>
 
     <div class="region-entry-text">
@@ -52,9 +52,13 @@
         decode later by scanning it.
       </p>
     </div>
+
+    <div class="loading-overlay" id="loading-overlay" hidden aria-live="polite">
+      <span class="loading-overlay__label">Encrypting message…</span>
+    </div>
   </main>
 
-  <script type="module" src="js/main.js"></script>
-  <script type="module" src="js/entry.js"></script>
+  <script type="module" src="js/main.js?v=6"></script>
+  <script type="module" src="js/entry.js?v=6"></script>
 </body>
 </html>

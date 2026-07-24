@@ -25,20 +25,63 @@ import { CONFIG } from "../../barcode_system/site/shared/config.js";
 import { createStore } from "../../barcode_system/site/shared/store.js";
 import { composeReceipt, canvasToPngBlob } from "../../barcode_system/site/shared/render.js";
 import { CODE_MIN, CODE_MAX } from "../../barcode_system/site/shared/tickcode.js";
+import { initBlackBar, rememberBlackBar, animateBlackBar } from "./black-bar.js";
+import {
+  consumeEncrypting,
+  showLoadingOverlay,
+  hideLoadingOverlayInstant,
+} from "./loading.js";
 
+const blackBar = document.getElementById("black-bar");
 const gridContent = document.getElementById("grid-content");
 const wordCount = document.getElementById("word-count");
 const charCount = document.getElementById("char-count");
 const statusLine = document.getElementById("status-line");
 const fillOutlineSwitch = document.getElementById("fill-outline-switch");
 const tickerText = document.getElementById("ticker-text");
+const loadingOverlay = document.getElementById("loading-overlay");
 
 const query = new URLSearchParams(window.location.search);
 const message = (query.get("message") || "").trim();
+const encrypting =
+  document.documentElement.classList.contains("is-encrypting") ||
+  consumeEncrypting() ||
+  Boolean(message);
+
+if (encrypting && message) {
+  /* Stay fully covered; shrink only after graphics are ready */
+  document.documentElement.classList.add("is-encrypting");
+  rememberBlackBar(24);
+  initBlackBar(blackBar, 24, { animate: false });
+  showLoadingOverlay(loadingOverlay);
+} else {
+  document.documentElement.classList.remove("is-encrypting");
+  initBlackBar(blackBar, 2);
+}
 
 let host = null;
 let store = null;
 let printing = false;
+let idleTimer = null;
+const IDLE_RETURN_MS = 120_000;
+
+function returnToHome() {
+  if (printing) return;
+  if (document.documentElement.classList.contains("is-encrypting")) return;
+  rememberBlackBar(2);
+  window.location.href = "index.html";
+}
+
+function resetIdleTimer() {
+  if (printing) return;
+  if (document.documentElement.classList.contains("is-encrypting")) return;
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(returnToHome, IDLE_RETURN_MS);
+}
+
+for (const eventName of ["pointerdown", "keydown", "input", "touchstart"]) {
+  document.addEventListener(eventName, resetIdleTimer, { passive: true });
+}
 
 /* ---------- status + stats ---------- */
 
@@ -176,6 +219,7 @@ async function sendInfoReceipt(code) {
 async function onPrint() {
   if (printing || !host) return;
   printing = true;
+  clearTimeout(idleTimer);
 
   try {
     const svg = rebuildTotalSvgFromGrid(gridContent);
@@ -196,6 +240,7 @@ async function onPrint() {
       setStatus(`Printing part 2 (info receipt #${code}) …`);
       await sendInfoReceipt(code);
       setStatus(`Printed – code #${code}`);
+      rememberBlackBar(2);
       window.location.href = "finish.html";
     } catch (printError) {
       const hint =
@@ -208,6 +253,7 @@ async function onPrint() {
     setStatus(`Error: ${error.message}`);
   } finally {
     printing = false;
+    resetIdleTimer();
   }
 }
 
@@ -224,6 +270,7 @@ document.addEventListener("fr:switch-change", applyGuiOptions);
 document.addEventListener("fr:action", (event) => {
   const { action } = event.detail;
   if (action === "back") {
+    rememberBlackBar(2);
     const target = new URL("entry.html", window.location.href);
     if (message) target.searchParams.set("message", message);
     window.location.href = target.toString();
@@ -242,18 +289,32 @@ if (tickerText && message) {
   tickerText.textContent = message;
 }
 
+async function revealEditor() {
+  /* Bar already at full height under the overlay — swap cover, then shrink */
+  rememberBlackBar(24);
+  initBlackBar(blackBar, 24, { animate: false });
+  document.documentElement.classList.remove("is-encrypting");
+  hideLoadingOverlayInstant(loadingOverlay);
+  await animateBlackBar(blackBar, 2);
+  resetIdleTimer();
+}
+
 async function run() {
   store = createStore();
   updateStats(null);
 
   if (!message) {
+    hideLoadingOverlayInstant(loadingOverlay);
+    document.documentElement.classList.remove("is-encrypting");
+    initBlackBar(blackBar, 2, { animate: false });
     showGridMessage("No message provided.\nPlease go back to the entry screen.");
     setStatus("No input");
+    resetIdleTimer();
     return;
   }
 
-  showGridMessage("Generating symbols …");
-  setStatus(`Generating … (${store.mode === "supabase" ? "Cloud" : "Offline"})`);
+  showLoadingOverlay(loadingOverlay);
+  setStatus(`Encrypting … (${store.mode === "supabase" ? "Cloud" : "Offline"})`);
 
   try {
     const result = await generate(message);
@@ -282,6 +343,8 @@ async function run() {
         "so the SVG files can be loaded."
     );
     setStatus("Error");
+  } finally {
+    await revealEditor();
   }
 }
 

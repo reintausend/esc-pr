@@ -4,6 +4,40 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ESC-PR — Editor</title>
+  <script>
+    /* Before first paint: keep stage covered when arriving from Create */
+    (function () {
+      try {
+        var enc = sessionStorage.getItem("fr-encrypting") === "1";
+        var msg = /(?:^|[?&])message=/.test(location.search);
+        if (enc || msg) document.documentElement.classList.add("is-encrypting");
+      } catch (e) {}
+    })();
+  </script>
+  <style>
+    /* Critical cover — must beat [hidden] before CSS bundles load */
+    html.is-encrypting,
+    html.is-encrypting body {
+      background: #000;
+    }
+    html.is-encrypting .loading-overlay,
+    html.is-encrypting .loading-overlay[hidden] {
+      display: flex !important;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 100% !important;
+      z-index: 50;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+      color: #fff;
+      box-sizing: border-box;
+      pointer-events: auto;
+    }
+  </style>
 
   <link rel="stylesheet" href="css/reset.css" />
   <link rel="stylesheet" href="css/variables.css" />
@@ -16,11 +50,17 @@
   <link rel="stylesheet" href="css/components/slider.css" />
   <link rel="stylesheet" href="css/components/ticker.css" />
   <link rel="stylesheet" href="css/components/panel.css" />
+  <link rel="stylesheet" href="css/components/loading.css" />
   <link rel="stylesheet" href="css/editor.css" />
 </head>
 <body>
   <main class="stage">
-    <div class="region-ticker">
+    <div class="loading-overlay" id="loading-overlay" hidden aria-live="polite">
+      <span class="loading-overlay__label">Encrypting message…</span>
+    </div>
+
+    <div class="region-ticker-spacer" aria-hidden="true"></div>
+    <div class="region-ticker" id="black-bar" data-black-bar="2">
       <div class="ticker">
         <span class="ticker__text" id="ticker-text">Your message</span>
       </div>
@@ -32,6 +72,12 @@
       </button>
     </div>
 
+    <div class="region-randomize">
+      <button class="btn" type="button" data-component="button" data-action="randomize">
+        Randomize
+      </button>
+    </div>
+
     <div class="region-fill-outline">
       <div class="switch" id="fill-outline-switch" data-component="switch">
         <button class="switch__option is-active" type="button" data-value="fill">Fill-In</button>
@@ -40,44 +86,73 @@
     </div>
 
     <div class="region-rounded-edges">
-      <div class="label" data-component="label" data-for="rounded-edges">Rounded Edges</div>
-    </div>
-    <div class="region-rounded-edges-slider">
-      <div class="slider" data-component="slider" data-id="rounded-edges" data-min="0" data-max="100" data-value="0"></div>
+      <div class="slider-field">
+        <div class="label" data-component="label" data-for="rounded-edges">Round Edges</div>
+        <div
+          class="slider"
+          data-component="slider"
+          data-id="rounded-edges"
+          data-min="0"
+          data-max="100"
+          data-value="0"
+        ></div>
+      </div>
     </div>
 
     <div class="region-stroke">
-      <div class="label" data-component="label" data-for="stroke">Stroke</div>
-    </div>
-    <div class="region-stroke-slider">
-      <div class="slider" data-component="slider" data-id="stroke" data-min="0" data-max="100" data-value="0"></div>
+      <div class="slider-field">
+        <div class="label" data-component="label" data-for="stroke">Stroke</div>
+        <div
+          class="slider"
+          data-component="slider"
+          data-id="stroke"
+          data-min="0"
+          data-max="100"
+          data-value="0"
+        ></div>
+      </div>
     </div>
 
     <div class="region-tweak-horizontal">
-      <div class="label" data-component="label" data-for="tweak-horizontal">Tweak Horizontal</div>
-    </div>
-    <div class="region-tweak-horizontal-slider">
-      <div class="slider" data-component="slider" data-id="tweak-horizontal" data-min="0" data-max="100" data-value="0"></div>
+      <div class="slider-field">
+        <div class="label" data-component="label" data-for="tweak-horizontal">Tweak Horizontal</div>
+        <div
+          class="slider"
+          data-component="slider"
+          data-id="tweak-horizontal"
+          data-min="0"
+          data-max="100"
+          data-value="0"
+        ></div>
+      </div>
     </div>
 
     <div class="region-tweak-vertical">
-      <div class="label" data-component="label" data-for="tweak-vertical">Tweak Vertical</div>
-    </div>
-    <div class="region-tweak-vertical-slider">
-      <div class="slider" data-component="slider" data-id="tweak-vertical" data-min="0" data-max="100" data-value="0"></div>
+      <div class="slider-field">
+        <div class="label" data-component="label" data-for="tweak-vertical">Tweak Vertical</div>
+        <div
+          class="slider"
+          data-component="slider"
+          data-id="tweak-vertical"
+          data-min="0"
+          data-max="100"
+          data-value="0"
+        ></div>
+      </div>
     </div>
 
     <div class="region-size">
-      <div class="label" data-component="label" data-for="size">Size</div>
-    </div>
-    <div class="region-size-slider">
-      <div class="slider" data-component="slider" data-id="size" data-min="0" data-max="100" data-value="35"></div>
-    </div>
-
-    <div class="region-randomize">
-      <button class="btn" type="button" data-component="button" data-action="randomize">
-        Randomize
-      </button>
+      <div class="slider-field">
+        <div class="label" data-component="label" data-for="size">Size</div>
+        <div
+          class="slider"
+          data-component="slider"
+          data-id="size"
+          data-min="0"
+          data-max="100"
+          data-value="35"
+        ></div>
+      </div>
     </div>
 
     <div class="region-canvas">
@@ -90,7 +165,13 @@
 
     <div class="region-stats">
       <div class="panel panel--stats">
-        <p class="stats">Words: <span id="word-count">0</span><br />Characters: <span id="char-count">0</span><br /><span id="status-line">Ready</span></p>
+        <div class="stats">
+          <p class="stats__counts">
+            Words: <span id="word-count">0</span><br />
+            Characters: <span id="char-count">0</span>
+          </p>
+          <p class="stats__status" id="status-line">Ready</p>
+        </div>
       </div>
     </div>
 
@@ -102,7 +183,7 @@
   </main>
 
   <script src="../generator/Editor/tools/paperjs-v0/dist/paper-core.min.js"></script>
-  <script type="module" src="js/main.js"></script>
-  <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/main.js?v=6"></script>
+  <script type="module" src="js/app.js?v=6"></script>
 </body>
 </html>

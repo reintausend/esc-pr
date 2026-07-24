@@ -13,22 +13,50 @@
     from the underline. Font stays at BASE_FS (120 design-px) for 1–2
     lines; when a third line is needed the font shrinks so the whole
     message stays visible.
-  - Submit forwards to the editor stage with the message as URL param.
+  - Submit expands the encrypting cover, then forwards to the editor.
+  - After 1 minute of idle input, the page returns to the start screen.
 */
 import { isAllowedCharacter } from "../../generator/Generator/material/zeichensatz.js";
+import { initBlackBar, rememberBlackBar } from "./black-bar.js";
+import { markEncrypting, expandLoadingOverlay } from "./loading.js";
 
 const MAX_WORDS = 10;
 const BASE_FS = 120; // design-px
 const MIN_FS = 48;
 const LINE_HEIGHT = 1.1;
 const TOP_MARGIN_DU = 40; // design-px headroom inside the band
+const IDLE_RETURN_MS = 60_000;
 
 const createForm = document.getElementById("create-form");
+const createBtn = document.getElementById("create-btn");
 const messageInput = document.getElementById("message-input");
 const wordsLeft = document.getElementById("words-left");
 const band = document.querySelector(".region-entry-band");
+const loadingOverlay = document.getElementById("loading-overlay");
+
+initBlackBar(document.getElementById("black-bar"), 6);
 
 let lastValid = "";
+let submitting = false;
+let idleTimer = null;
+
+function returnToStart() {
+  if (submitting) return;
+  rememberBlackBar(6);
+  window.location.href = "index.html";
+}
+
+function resetIdleTimer() {
+  if (submitting) return;
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(returnToStart, IDLE_RETURN_MS);
+}
+
+for (const eventName of ["pointerdown", "keydown", "input", "touchstart"]) {
+  document.addEventListener(eventName, resetIdleTimer, { passive: true });
+}
+resetIdleTimer();
+
 
 function countWords(value) {
   return value.split(/\s+/).filter(Boolean).length;
@@ -142,22 +170,51 @@ messageInput.addEventListener("keydown", (event) => {
   }
 });
 
-createForm.addEventListener("submit", (event) => {
+createForm.addEventListener("submit", async (event) => {
   event.preventDefault();
+  if (submitting) return;
 
   const message = messageInput.value.trim();
   if (!message) return;
 
+  submitting = true;
+  clearTimeout(idleTimer);
+  if (createBtn) {
+    createBtn.classList.remove("is-blinking");
+    void createBtn.offsetWidth;
+    createBtn.classList.add("is-blinking");
+  }
+
+  /* Expand black cover top→bottom; only then navigate (no editor flash) */
+  markEncrypting();
+  rememberBlackBar(24);
+
   const target = new URL("editor.html", window.location.href);
   target.searchParams.set("message", message);
+
+  await expandLoadingOverlay(loadingOverlay, 6);
   window.location.href = target.toString();
 });
 
 document.addEventListener("fr:action", (event) => {
   if (event.detail.action === "back") {
+    rememberBlackBar(6);
     window.location.href = "index.html";
   }
 });
+
+/* Focus the message field as soon as the screen is ready */
+function focusMessageInput() {
+  if (!messageInput) return;
+  messageInput.focus({ preventScroll: true });
+  const len = messageInput.value.length;
+  messageInput.setSelectionRange(len, len);
+}
+
+requestAnimationFrame(focusMessageInput);
+if (document.fonts?.ready) {
+  document.fonts.ready.then(focusMessageInput);
+}
 
 const stage = document.querySelector(".stage");
 if (stage) new ResizeObserver(() => fitInputLayout()).observe(stage);

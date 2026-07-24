@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <title>ESC-PR Vector Encryption Terminal</title>
 
   <link rel="stylesheet" href="css/reset.css" />
@@ -16,8 +17,61 @@
   <main class="stage">
     <div class="graphics-lanes" id="graphics-lanes" aria-hidden="true"></div>
 
-    <div class="region-start-panel">
-      <h1 class="start-title">ESC-PR<br />Vector Encryption<br />Terminal</h1>
+    <!--
+      Figma start header — no JS required for the look:
+      • full-width black bar, 6 grid rows (360 / 1440)
+      • title cut-out mask (lanes show through letterforms)
+      • Funnel Display Regular, 168 / 126, x=160 (col 2), vertically centered
+    -->
+    <div class="region-start-header" id="black-bar" data-black-bar="6">
+      <svg
+        class="start-header__svg"
+        viewBox="0 0 2560 360"
+        preserveAspectRatio="xMinYMid meet"
+        aria-hidden="true"
+      >
+        <defs>
+          <mask
+            id="start-title-mask"
+            maskUnits="userSpaceOnUse"
+            maskContentUnits="userSpaceOnUse"
+            x="0"
+            y="0"
+            width="2560"
+            height="360"
+          >
+            <rect width="2560" height="360" fill="#ffffff" />
+            <text
+              x="160"
+              y="33"
+              dominant-baseline="hanging"
+              fill="#000000"
+              font-family="Funnel Display, Helvetica Neue, Arial, sans-serif"
+              font-weight="400"
+              font-size="168"
+            >ESC-PR</text>
+            <text
+              x="160"
+              y="201"
+              dominant-baseline="hanging"
+              fill="#000000"
+              font-family="Funnel Display, Helvetica Neue, Arial, sans-serif"
+              font-weight="400"
+              font-size="126"
+            >Vector Encryption Terminal</text>
+          </mask>
+        </defs>
+        <rect
+          width="2560"
+          height="360"
+          fill="#000000"
+          mask="url(#start-title-mask)"
+        />
+      </svg>
+      <h1 class="start-title">
+        <span class="start-title__brand">ESC-PR</span>
+        <span class="start-title__sub">Vector Encryption Terminal</span>
+      </h1>
     </div>
 
     <div class="region-start-action">

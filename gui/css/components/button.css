@@ -1,13 +1,9 @@
 /*
   Button component
   -----------------
-  One style for every button in the interface:
-    default  black surface, white label
-    hover    accent-green surface, black label
-    active   slightly dimmed green (pressed feedback)
-
-  The green buttons in the Figma frames are the hover state drawn
-  statically. Labels are centered.
+  default  black surface, white label
+  hover    inverted (white surface, black label)
+  tap      three short black↔white blinks
 */
 
 .btn {
@@ -23,23 +19,81 @@
   border: var(--border-w) solid var(--color-black);
 
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: 400;
   font-size: calc(100cqw * 32 / var(--dw));
   line-height: 1;
 
   user-select: none;
   -webkit-user-select: none;
-  transition: background-color 0.1s ease, color 0.1s ease;
+  transition: background-color 0.1s ease, color 0.1s ease, border-color 0.1s ease;
 }
 
 .btn:hover {
-  background: var(--color-accent);
+  background: var(--color-white);
   color: var(--color-black);
-  border-color: var(--color-accent);
+  border-color: var(--color-black);
 }
 
 .btn:active {
-  background: #00d93a;
+  background: var(--color-white);
   color: var(--color-black);
-  border-color: #00d93a;
+  border-color: var(--color-black);
+}
+
+@keyframes btn-blink {
+  0%,
+  100% {
+    background: var(--color-black);
+    color: var(--color-white);
+    border-color: var(--color-black);
+  }
+  50% {
+    background: var(--color-white);
+    color: var(--color-black);
+    border-color: var(--color-black);
+  }
+}
+
+.btn.is-blinking {
+  animation: btn-blink 0.1s ease 3;
+  transition: none;
+}
+
+/* Finish screen: white outline on black stage */
+.stage--finish .btn {
+  background: transparent;
+  color: var(--color-white);
+  border-color: var(--color-white);
+}
+
+.stage--finish .btn:hover,
+.stage--finish .btn:active {
+  background: var(--color-white);
+  color: var(--color-black);
+  border-color: var(--color-white);
+}
+
+@keyframes btn-blink-finish {
+  0%,
+  100% {
+    background: transparent;
+    color: var(--color-white);
+    border-color: var(--color-white);
+  }
+  50% {
+    background: var(--color-white);
+    color: var(--color-black);
+    border-color: var(--color-white);
+  }
+}
+
+.stage--finish .btn.is-blinking {
+  animation: btn-blink-finish 0.1s ease 3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn.is-blinking,
+  .stage--finish .btn.is-blinking {
+    animation: none;
+  }
 }

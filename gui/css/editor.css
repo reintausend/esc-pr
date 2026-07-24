@@ -50,21 +50,21 @@
   max-width: none;
 }
 
-/* The stats panel gains a third line (print/store status), which does
-   not fit the original two-line height — extend the region by one row. */
+/* Stats panel: taller so multi-line print/status messages fit.
+   Horizontal placement lives in layout.css (mirrored inset). */
 .region-stats {
-  grid-row: 4 / 9;
+  grid-row: 4 / 10;
 }
 
 #status-line {
-  font-size: calc(100cqw * 28 / var(--dw));
+  /* size handled in panel.css .stats__status */
 }
 
 /* Generation / error feedback inside the otherwise empty panel */
 .grid-message {
   padding: calc(100cqw * 24 / var(--dw));
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: 400;
   font-size: calc(100cqw * 28 / var(--dw));
   line-height: 1.5;
   color: var(--color-black);

@@ -14,15 +14,18 @@
   --dw: 2560;
 
   /* Colors */
-  --color-bg: #f7f7f7;
+  --color-bg: #f2f6f7;
   --color-black: #000000;
   --color-white: #ffffff;
-  --color-accent: #00ff44;
 
-  /* Single typeface across the whole interface (Typestar was dropped
-     in the green redesign — all former --font-mono uses are Roobert). */
-  --font-display: "Roobert", "Helvetica Neue", Arial, sans-serif;
+  /* Suisse Screen Trial — UI everywhere except the start title */
+  --font-display: "Suisse Screen Trial", "Helvetica Neue", Arial, sans-serif;
+  /* Funnel Display — start header (and later mobile header) only */
+  --font-start: "Funnel Display", "Helvetica Neue", Arial, sans-serif;
 
   /* Shared border weight used across outlined components */
   --border-w: max(1px, calc(100cqw * 2 / var(--dw)));
+
+  /* Black top-bar morph (rows out of 24); set by black-bar.js */
+  --bar-rows: 6;
 }

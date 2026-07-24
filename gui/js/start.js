@@ -17,6 +17,8 @@
   pixels only when rendering.
 */
 
+import { initBlackBar, rememberBlackBar } from "./black-bar.js";
+
 const STRIP_COUNT = 8;
 const STRIP_BASE = "assets/graphics_startscreen/";
 
@@ -64,10 +66,27 @@ function shuffleInPlace(arr) {
   return arr;
 }
 
+initBlackBar(document.getElementById("black-bar"), 6);
+
+/* Re-paint SVG mask text after Funnel Display finishes loading */
+function refreshStartTitleMask() {
+  const svg = document.querySelector(".start-header__svg");
+  if (!svg) return;
+  /* Force a reflow so mask text picks up the webfont */
+  svg.style.display = "none";
+  void svg.getBoundingClientRect();
+  svg.style.display = "block";
+}
+
+if (document.fonts?.ready) {
+  document.fonts.ready.then(refreshStartTitleMask);
+}
+
 /* ---------- navigation ---------- */
 
 document.addEventListener("fr:action", (event) => {
   if (event.detail.action === "start") {
+    rememberBlackBar(6);
     window.location.href = "entry.html";
   }
 });

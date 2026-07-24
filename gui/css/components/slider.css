@@ -1,34 +1,87 @@
 /*
-  Slider component
-  ----------------
-  Standalone continuous slider, no baked-in label, no discrete steps.
-  Same 2-col x 1-row footprint as a sidebar button, placed immediately to
-  the right of its related label/toggle button in index.html.
-
-  Visual language matches the rest of the interface: white background,
-  2px black outline, and a solid black fill growing from the left edge
-  to the current value — the same "black fill on white outline" idiom as
-  the filled buttons and the active half of the Fill-In/Outline switch,
-  just continuous instead of a fixed half/whole state. Drag (or click)
-  anywhere in the control to set the value freely; no snapping.
-
-  Markup:
-    <div class="slider" data-component="slider" data-id="size"
-         data-min="0" data-max="100" data-value="40"></div>
-  slider.js appends the .slider__fill element and handles pointer drag.
+  Slider field (Figma editor)
+  ---------------------------
+  One 640×120 block: label + live value on the top row, thin track with
+  a 30×30 square thumb on the bottom row. Defaults stay on data-value.
 */
+
+.slider-field {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 0 calc(100cqw * 16 / var(--dw));
+}
+
+.slider-field .label {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+
+  background: transparent;
+  color: var(--color-black);
+  border: none;
+
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: calc(100cqw * 32 / var(--dw));
+  line-height: 1;
+
+  overflow: visible;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Always-visible name | value row (no slide-up reveal) */
+.slider-field .label__viewport {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.slider-field .label__stack {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  transition: none;
+}
+
+.slider-field .label.is-revealing .label__stack {
+  transform: none;
+}
+
+.slider-field .label__name,
+.slider-field .label__value {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  height: auto;
+  white-space: nowrap;
+}
+
+.slider-field .label__value {
+  font-variant-numeric: tabular-nums;
+}
+
+.slider-field .label__value-unit {
+  display: none; /* Figma shows the bare number, no % */
+}
 
 .slider {
   position: relative;
   width: 100%;
   height: 100%;
-
-  background: var(--color-white);
-  /* No left border — abuts the paired label so the shared edge is a
-     single stroke (the label's right border), not a double line. */
-  border: var(--border-w) solid var(--color-black);
-  border-left: none;
-  overflow: hidden;
+  background: transparent;
+  border: none;
+  overflow: visible;
 
   cursor: pointer;
   touch-action: none;
@@ -36,12 +89,38 @@
   -webkit-user-select: none;
 }
 
+/* Horizontal track */
+.slider::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: max(2px, calc(100cqw * 5 / var(--dw)));
+  transform: translateY(-50%);
+  background: var(--color-black);
+  pointer-events: none;
+}
+
+/* Thumb position driven by --value (0–100) */
 .slider__fill {
   position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
   width: calc(var(--value, 0) * 1%);
+  background: transparent;
+  pointer-events: none;
+}
+
+.slider__fill::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: calc(100cqw * 30 / var(--dw));
+  height: calc(100cqw * 30 / var(--dw));
+  transform: translate(50%, -50%);
   background: var(--color-black);
   pointer-events: none;
 }

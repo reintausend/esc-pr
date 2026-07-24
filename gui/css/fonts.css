@@ -1,14 +1,23 @@
 /*
-  Real font files live in assets/fonts/. Only the weight actually used
-  by the current design (500) is declared here — the roobert/ folder
-  contains more weights/styles (Light/Regular/SemiBold/Bold/Heavy,
-  italics) available for later; add more @font-face blocks the same way.
+  Real font files live in assets/fonts/.
+  - Suisse Screen Trial Regular: UI type across station screens
+  - Funnel Display Regular: start-screen title (mask header) only
 */
 
 @font-face {
-  font-family: "Roobert";
-  src: url("../assets/fonts/roobert/Roobert-Medium.otf") format("opentype");
-  font-weight: 500;
+  font-family: "Suisse Screen Trial";
+  src: url("../assets/fonts/suisse_intl/SuisseScreenTrial-Regular.otf")
+    format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Funnel Display";
+  src: url("../assets/fonts/Funnel_Display/static/FunnelDisplay-Regular.ttf")
+    format("truetype");
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }

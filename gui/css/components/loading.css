@@ -1,0 +1,72 @@
+/*
+  Full-stage encrypting cover. Expands top→bottom as a black panel.
+  html.is-encrypting forces full cover before editor JS runs (no FOUC).
+*/
+
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: auto;
+  width: 100%;
+  height: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-black);
+  overflow: hidden;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.loading-overlay[hidden] {
+  display: none;
+}
+
+.loading-overlay.is-visible {
+  display: flex;
+  pointer-events: auto;
+}
+
+.loading-overlay__label {
+  color: var(--color-white);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: calc(100cqw * 48 / var(--dw));
+  line-height: 1;
+  animation: loading-pulse 1.1s ease-in-out infinite;
+}
+
+/* First paint on editor: stay fully covered until generation finishes */
+html.is-encrypting .loading-overlay,
+html.is-encrypting .loading-overlay[hidden] {
+  display: flex !important;
+  height: 100% !important;
+  pointer-events: auto;
+}
+
+html.is-encrypting .loading-overlay__label {
+  animation: loading-pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes loading-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-overlay {
+    transition: none !important;
+  }
+
+  .loading-overlay__label {
+    animation: none;
+  }
+}

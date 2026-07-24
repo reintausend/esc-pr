@@ -5,19 +5,17 @@
   the editor keeps its regions in layout.css.
 
   Figma frame mapping (design px -> grid lines):
-    start panel    1280x720 @ (640,360)   -> cols 5/13,  rows 7/19
+    start header   2560x360 @ (0,0)       -> full width, 6 rows
     start button    320x120 @ (2080,1200) -> cols 14/16, rows 21/23
-    entry band     2560x360 @ (0,0)       -> cols 1/17,  rows 1/7
-    entry counter   480x60  @ (160,480)   -> cols 2/5,   rows 9/10
-    entry create    320x60  @ (2080,480)  -> cols 14/16, rows 9/10
-    entry paragraph 2240x360 @ (160,840)  -> cols 2/16,  rows 15/21
+    entry band     2560x360 @ (0,0)       -> full width, 6 rows
+    entry counter   ~480x60 @ (160,480)   -> cols 2/5,   rows 8/9
+    entry create    160x60  @ (2240,1260) -> cols 15/16, rows 22/23
+    entry howto              @ (160,714)  -> cols 2/10,  rows 12/13
+    entry paragraph @ (160,809)           -> cols 2/10,  rows 14/18
 */
 
 /* ---- Start screen ---- */
 
-/* 8 double-columns across the full stage (2 grid cols = 320 design-px
-   each). Active streams are chosen at random by js/start.js; inactive
-   lanes stay empty. Strips are positioned via transform. */
 .graphics-lanes {
   position: absolute;
   inset: 0;
@@ -41,54 +39,69 @@
   will-change: transform;
 }
 
-.region-start-panel {
-  grid-column: 5 / 13;
-  grid-row: 7 / 19;
-  z-index: 1;
-
-  background: var(--color-accent);
-  /* Figma: text at (60, 60) inside the 1280×720 panel */
-  padding: calc(100cqw * 60 / var(--dw));
+/* Start header — full width, 6 rows. Black plate is the SVG rect;
+   letterforms are masked out so lane graphics (behind this layer) show
+   through. Header background must stay transparent or it would fill
+   the cut-outs. */
+.region-start-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 2;
+  height: calc(100% * 6 / 24);
+  box-sizing: border-box;
   overflow: hidden;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
+  pointer-events: none;
+  background: transparent;
 }
 
+.start-header__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Hide the HTML title visually — SVG is the visible title */
 .start-title {
-  margin: 0;
-  color: var(--color-black);
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: calc(100cqw * 120 / var(--dw));
-  /* Figma line-height: 100px at 120px type */
-  line-height: calc(100cqw * 100 / var(--dw));
-  text-align: left;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .region-start-action {
-  grid-column: 14 / 16;
-  grid-row: 21 / 23;
-  z-index: 1;
+  /* 320×120 button: horizontally centered, rows 15–16 */
+  grid-column: 8 / 10;
+  grid-row: 15 / 17;
+  z-index: 3;
 }
 
 .region-start-action .btn {
-  font-size: calc(100cqw * 58 / var(--dw));
+  font-size: calc(100cqw * 48 / var(--dw));
 }
 
 /* ---- Message entry ---- */
 
-/* The green band across the top is the input area: black text above a
-   single 5px underline for the whole block (x 160–2400, 58px above the
-   band's bottom). Text starts at 120px on one line, wraps by width
-   (mid-word allowed), grows upward to two lines, then shrinks so a
-   third line still fits and everything stays visible. */
 .region-entry-band {
-  grid-column: 1 / 17;
-  grid-row: 1 / 7;
-  position: relative;
-  background: var(--color-accent);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 2;
+  height: calc(100% * 6 / 24);
+  background: var(--color-black);
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .entry-input {
@@ -98,7 +111,6 @@
   left: calc(100cqw * 160 / var(--dw));
   right: calc(100cqw * 160 / var(--dw));
   bottom: calc(100cqw * 58 / var(--dw));
-  /* height set by JS — grows upward from the underline */
 
   box-sizing: border-box;
   width: auto;
@@ -108,17 +120,16 @@
   overflow: hidden;
 
   background: transparent;
-  color: var(--color-black);
-  caret-color: var(--color-black);
+  color: var(--color-white);
+  caret-color: var(--color-white);
   border: none;
-  border-bottom: calc(100cqw * 5 / var(--dw)) solid var(--color-black);
+  border-bottom: calc(100cqw * 5 / var(--dw)) solid var(--color-white);
   border-radius: 0;
 
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: 400;
   font-size: calc(100cqw * var(--entry-fs) / var(--dw));
   line-height: 1.1;
-  /* em-based so Ö/Ä dots clear at any font size / stage scale */
   padding: 0.3em 0 calc(100cqw * 16 / var(--dw));
 
   text-transform: uppercase;
@@ -129,7 +140,7 @@
 }
 
 .entry-input::placeholder {
-  color: rgba(0, 0, 0, 0.3);
+  color: rgba(255, 255, 255, 0.35);
 }
 
 .entry-input:focus {
@@ -138,87 +149,122 @@
 
 .region-entry-counter {
   grid-column: 2 / 5;
-  grid-row: 9 / 10;
+  grid-row: 8 / 9;
+  z-index: 3;
 }
 
 .entry-counter {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.3em;
   width: 100%;
   height: 100%;
 
-  background: var(--color-accent);
+  background: var(--color-white);
   color: var(--color-black);
+  border: var(--border-w) solid var(--color-black);
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: 400;
   font-size: calc(100cqw * 32 / var(--dw));
   line-height: 1;
 }
 
+/* Figma: 160×60 @ (2240, 1260) → cols 15/16, rows 22/23 */
 .region-entry-create {
-  grid-column: 14 / 16;
-  grid-row: 9 / 10;
+  grid-column: 15 / 16;
+  grid-row: 22 / 23;
+  z-index: 3;
 }
 
-.region-entry-back {
-  grid-column: 1 / 2;
-  grid-row: 8 / 9;
+.region-entry-howto {
+  grid-column: 2 / 10;
+  grid-row: 12 / 13;
+  z-index: 1;
+  display: flex;
+  align-items: center;
 }
 
-.region-entry-back .btn {
-  border-left: none;
+.entry-howto-title {
+  margin: 0;
+  color: var(--color-black);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: calc(100cqw * 48 / var(--dw));
+  line-height: 1;
 }
 
 .region-entry-text {
-  grid-column: 2 / 16;
-  grid-row: 15 / 21;
+  grid-column: 2 / 10;
+  grid-row: 14 / 18;
+  z-index: 1;
 }
 
 .entry-text {
+  margin: 0;
   color: var(--color-black);
   font-family: var(--font-display);
-  font-weight: 500;
-  font-size: calc(100cqw * 60 / var(--dw));
-  line-height: 1.25;
+  font-weight: 400;
+  font-size: calc(100cqw * 32 / var(--dw));
+  line-height: 1.35;
 }
 
 /* ---- Finish screen ---- */
 
-.region-finish-panel {
-  grid-column: 5 / 13;
-  grid-row: 7 / 19;
+.stage--finish {
+  background: var(--color-black);
+}
 
-  background: var(--color-accent);
-  padding: calc(100cqw * 60 / var(--dw));
-  overflow: hidden;
+.region-finish-veil {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1;
+  height: 100%;
+  background: var(--color-black);
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.region-finish-panel {
+  grid-column: 2 / 14;
+  grid-row: 8 / 18;
+  z-index: 2;
 
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: calc(100cqw * 48 / var(--dw));
+  overflow: hidden;
 }
 
 .finish-title {
-  color: var(--color-black);
+  margin: 0;
+  color: var(--color-white);
   font-family: var(--font-display);
-  font-weight: 500;
-  font-size: calc(100cqw * 120 / var(--dw));
-  line-height: 1;
+  font-weight: 400;
+  font-size: calc(100cqw * 72 / var(--dw));
+  line-height: 1.1;
 }
 
 .finish-text {
-  color: var(--color-black);
+  margin: 0;
+  color: var(--color-white);
   font-family: var(--font-display);
-  font-weight: 500;
-  font-size: calc(100cqw * 44 / var(--dw));
-  line-height: 1.3;
+  font-weight: 400;
+  font-size: calc(100cqw * 32 / var(--dw));
+  line-height: 1.35;
+  max-width: calc(100cqw * 1400 / var(--dw));
 }
 
 .region-finish-action {
   grid-column: 14 / 16;
   grid-row: 21 / 23;
+  z-index: 2;
 }
 
 .region-finish-action .btn {
-  font-size: calc(100cqw * 58 / var(--dw));
+  font-size: calc(100cqw * 48 / var(--dw));
 }
