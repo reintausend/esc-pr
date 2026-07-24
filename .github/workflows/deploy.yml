@@ -1,4 +1,4 @@
-name: Deploy phone client to GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -24,28 +24,34 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
 
-      # Publish only what phones need. The terminal (gui HTML, generator,
-      # epson print server) stays local on the installation computer.
-      # Folder layout in the artifact mirrors the repo so mobile/'s
-      # relative imports keep working:
+      # Publish phone client + desktop station UI.
+      # Keep relative import paths identical to the repo:
       #   mobile/  →  ../barcode_system/site/shared/
       #            →  ../gui/css/  +  ../gui/assets/fonts/
-      - name: Assemble phone-only site
+      #   gui/     →  ../generator/  +  ../barcode_system/site/shared/
+      # Print server stays local — Print on Pages will fail without it.
+      - name: Assemble site
         run: |
           set -euo pipefail
-          mkdir -p _site/mobile
-          mkdir -p _site/gui/css
-          mkdir -p _site/gui/assets
-          mkdir -p _site/barcode_system/site
+          mkdir -p _site
 
-          cp -R mobile/. _site/mobile/
-          cp -R gui/css/. _site/gui/css/
-          cp -R gui/assets/fonts _site/gui/assets/fonts
+          cp -R mobile _site/mobile
+          cp -R gui _site/gui
+          cp -R generator _site/generator
+          mkdir -p _site/barcode_system/site
           cp -R barcode_system/site/shared _site/barcode_system/site/shared
           cp pages-root/index.html _site/index.html
 
-          echo "Assembled site:"
-          find _site -type f | sort | head -50
+          # Drop bulky / unused paths that the browser never loads
+          rm -rf _site/generator/Editor/tools/paperjs-v0/docs \
+                 _site/generator/Editor/tools/paperjs-v0/examples \
+                 _site/generator/Editor/tools/paperjs-v0/node_modules \
+                 _site/gui/.DS_Store \
+                 _site/generator/.DS_Store || true
+
+          echo "Assembled site (top-level):"
+          find _site -maxdepth 2 -type d | sort
+          echo "File count: $(find _site -type f | wc -l)"
 
       - uses: actions/upload-pages-artifact@v3
         with:
